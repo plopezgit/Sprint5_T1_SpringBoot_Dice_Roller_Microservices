@@ -5,7 +5,7 @@ spring:
     config:
       server:
         git:
-          default-label: S5T2_SpringBoot_Dice_Roller_Microservice_ConfigServer
+          default-label: config-server
           uri: https://github.com/plopezgit/Sprint5_T1_SpringBoot_Dice_Roller_Microservices
           search-paths: config-data
 

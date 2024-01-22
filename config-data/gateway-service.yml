@@ -15,10 +15,10 @@ eureka:
           enabled: true
       routes:
         - id: player-service
+          uri: lb://player-service
           predicates:
-            - Path=/players/
-          uri: player-service
+            - Path=/players/**
         - id: game-service
+          uri: lb://game-service
           predicates:
-            - Path=/games/
-          uri: game-service
+            - Path=/games/**

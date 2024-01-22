@@ -17,8 +17,8 @@ eureka:
         - id: player-service
           uri: lb://player-service
           predicates:
-            - Path=/players/**
+            - RewritePath\=/players/**
         - id: game-service
           uri: lb://game-service
           predicates:
-            - Path=/games/**
+            - RewritePath\=/games/**

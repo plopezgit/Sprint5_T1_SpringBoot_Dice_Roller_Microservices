@@ -1,5 +1,5 @@
 server:
-  port: 8080
+  port: 9000
 eureka:
   client:
     fetch-registry: true
@@ -12,11 +12,14 @@ spring:
   cloud:
     gateway:
       discovery:
-        Locator:
-          lowerCaseServiceId: true
+        locator:
           enabled: true
       routes:
         - id: player-service
           uri: lb://player-service
           predicates:
-          - Path=/players/**
+            - Path=/players/**
+        - id: game-service
+          uri: lb://player-service
+          predicates:
+            - Path=/games/**

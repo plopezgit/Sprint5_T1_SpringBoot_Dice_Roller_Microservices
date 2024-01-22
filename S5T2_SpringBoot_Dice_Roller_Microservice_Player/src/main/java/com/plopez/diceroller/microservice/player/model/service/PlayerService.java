@@ -57,7 +57,7 @@ public class PlayerService implements PlayerServiceInterface {
 
     @Override
     public List<GameDTO> getGamesBy(int playerId) {
-        List<GameDTO> games = restTemplate.getForObject("http://localhost:9002/games/player/" + playerId, List.class);
+        List<GameDTO> games = restTemplate.getForObject("http://game-service/games/player/" + playerId, List.class);
         return games;
     }
 

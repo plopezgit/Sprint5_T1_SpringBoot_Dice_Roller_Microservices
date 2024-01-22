@@ -18,8 +18,6 @@ spring:
         - id: player-service
           uri: lb://player-service
           predicates:
-          - Path=/players/**
-        - id: game-service
-          uri: lb://game-service
-          predicates:
-          - Path=/games/**
+          - name: Path
+            args:
+              name: /players/**

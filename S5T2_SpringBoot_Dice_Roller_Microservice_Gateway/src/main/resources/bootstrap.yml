@@ -1,0 +1,20 @@
+spring:
+  application:
+    name: gateway-service
+  cloud:
+    config:
+      enabled: true
+      uri: http://localhost:8081
+  datasource:
+    url: jdbc:h2:mem:game
+    username: root
+    password:
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+  h2:
+    console:
+      enabled: true
+      path: /h2-view
+

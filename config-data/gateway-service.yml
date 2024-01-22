@@ -8,19 +8,18 @@ eureka:
       default-zone: http://localhost:8761/eureka
   instance:
     hostname: localhost
-
 spring:
   cloud:
     gateway:
       discovery:
-        locator:
+        Locator:
           enabled: true
       routes:
         - id: player-service
           uri: lb://player-service
           predicates:
-            - Path=/players/**
+          - Path=/players/**
         - id: game-service
           uri: lb://game-service
           predicates:
-            - Path=/games/**
+          - Path=/games/**

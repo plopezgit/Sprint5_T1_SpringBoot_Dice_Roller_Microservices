@@ -13,11 +13,10 @@ spring:
     gateway:
       discovery:
         Locator:
+          lowerCaseServiceId: true
           enabled: true
       routes:
         - id: player-service
           uri: lb://player-service
           predicates:
-          - name: Path
-            args:
-              name: /players/**
+          - Path=/players/**

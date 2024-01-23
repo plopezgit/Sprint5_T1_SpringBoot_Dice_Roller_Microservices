@@ -1,4 +1,4 @@
-package com.plopez.diceroller.microservice.authservice.model.dto;
+package com.plopez.diceroller.microservice.gateway.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -8,7 +8,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-@Builder
 public class TokenDTO {
     private String token;
 }

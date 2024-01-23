@@ -9,7 +9,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Data
 @Builder
-public class AuthUserDTO {
-    private String userName;
-    private String password;
+public class TokenDTO {
+    private String token;
 }

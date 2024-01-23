@@ -1,9 +1,5 @@
-package com.plopez.diceroller.microservice.authservice.model.entity;
+package com.plopez.diceroller.microservice.authservice.model.dto;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -13,12 +9,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Data
 @Builder
-@Entity
-public class AuthUser {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+public class AuthUserDTO {
     private String userName;
     private String password;
-
 }

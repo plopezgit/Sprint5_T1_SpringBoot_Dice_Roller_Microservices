@@ -4,6 +4,7 @@ import com.plopez.diceroller.microservice.player.model.dto.GameDTO;
 import com.plopez.diceroller.microservice.player.model.dto.PlayerDTO;
 import com.plopez.diceroller.microservice.player.model.exception.PlayerNotFoundException;
 import com.plopez.diceroller.microservice.player.model.service.PlayerService;
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -58,9 +59,14 @@ public class PlayerController {
         return new ResponseEntity<>(HttpStatus.ACCEPTED);
     }
 
+    @CircuitBreaker(name="gamesCB", fallbackMethod ="fallbackGetGamesByPlayer")
     @GetMapping("/{playerId}/games")
     public ResponseEntity<?> getGamesByPlayer(@PathVariable int playerId) {
         List<GameDTO> games = playerService.getGamesBy(playerId);
         return ResponseEntity.ok(games);
+    }
+
+    private ResponseEntity<?> fallbackGetGamesByPlayer(@PathVariable int playerId, RuntimeException e) {
+        return new ResponseEntity<>("The player: " + playerId + " does not have games yet.", HttpStatus.OK);
     }
 }

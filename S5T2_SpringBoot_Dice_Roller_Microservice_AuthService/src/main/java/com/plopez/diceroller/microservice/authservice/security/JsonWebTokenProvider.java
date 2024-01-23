@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.Base64;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
 
 @Component
@@ -23,7 +24,7 @@ public class JsonWebTokenProvider {
     }
 
     public String createToken(AuthUser authUser) {
-        Map<String, Object> claims;
+        Map<String, Object> claims = new HashMap<>();
         claims = Jwts.claims().setSubject(authUser.getUserName());
         claims.put("id", authUser.getId());
         Date now = new Date();

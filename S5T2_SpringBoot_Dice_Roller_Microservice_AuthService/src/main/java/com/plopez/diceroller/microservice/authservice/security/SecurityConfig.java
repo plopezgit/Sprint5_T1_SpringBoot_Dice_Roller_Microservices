@@ -1,5 +1,6 @@
 package com.plopez.diceroller.microservice.authservice.security;
 
+import com.plopez.diceroller.microservice.authservice.model.service.AuthUserService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -23,7 +24,7 @@ public class SecurityConfig {
                 .cors(AbstractHttpConfigurer::disable)
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(request -> request
-                        .requestMatchers("/auth").permitAll()
+                        .requestMatchers("/auth", "/h2-view").permitAll()
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
@@ -46,6 +47,11 @@ public class SecurityConfig {
     @Bean
     public UserDetailsService userDetailsService() {
         return new AuthUserDetailsServiceImplementation();
+    }
+
+    @Bean
+    public AuthUserService authUserService() {
+        return new AuthUserService();
     }
 
 }

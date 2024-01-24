@@ -29,3 +29,8 @@ spring:
           uri: lb://auth-service
           predicates:
             - Path=/auth/**
+
+management:
+  tracing:
+    sampling:
+      probability: 1.0

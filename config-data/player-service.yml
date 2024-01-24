@@ -24,3 +24,8 @@ resilience4j.circuitbreaker:
 spring:
   application:
     zipkin: http://localhost:9411
+
+management:
+  tracing:
+    sampling:
+      probability: 1.0

@@ -24,3 +24,8 @@ spring:
           uri: lb://game-service
           predicates:
             - Path=/games/**
+
+management:
+  tracing:
+    sampling:
+      probability: 1.0

@@ -19,8 +19,3 @@ spring:
       path: /h2-view
 jwt:
   secret: secret
-admin-paths:
-  paths:
-    -
-      uri: "/players"
-      method: "POST"

@@ -12,3 +12,13 @@ eureka:
     paths:
       - uri: "/players"
         method: "POST"
+
+
+
+
+
+
+management:
+  tracing:
+    sampling:
+      probability: 1.0

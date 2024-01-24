@@ -1,6 +1,8 @@
 package com.plopez.diceroller.microservice.gateway.configuration;
 
+import com.plopez.diceroller.microservice.gateway.dto.HttpRequestDTO;
 import com.plopez.diceroller.microservice.gateway.dto.TokenDTO;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.cloud.gateway.filter.GatewayFilter;
@@ -33,6 +35,7 @@ public class AuthFilter extends AbstractGatewayFilterFactory<AuthFilter.Config> 
             return webClient.build()
                     .post()
                     .uri("http://auth-service/auth/validate?token=" + chunks[1])
+                    .bodyValue(new HttpRequestDTO(exchange.getRequest().getPath().toString(), exchange.getRequest().getMethod().toString()))
                     .retrieve().bodyToMono(TokenDTO.class)
                     .map(t -> {
                         t.getToken();

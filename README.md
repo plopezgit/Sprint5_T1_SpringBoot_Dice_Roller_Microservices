@@ -1,5 +1,9 @@
 # Dice roller microservices
 
+### Current trace
+
+![current trace](dice-roller-microservices-use-trace.gif)
+
 #### Requirement
 
 ##### Level 1
@@ -46,4 +50,4 @@ The software must respect the main design patterns.
 
 ## Feedback and results
 
-![Feedback soon]()
+Feedback soon...

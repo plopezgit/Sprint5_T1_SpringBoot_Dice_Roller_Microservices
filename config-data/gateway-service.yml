@@ -30,6 +30,8 @@ spring:
           predicates:
             - Path=/auth/**
 
+
+
 management:
   tracing:
     sampling:

@@ -1,6 +1,7 @@
 package com.plopez.diceroller.microservice.authservice.model.service;
 
 import com.plopez.diceroller.microservice.authservice.model.dto.AuthUserDTO;
+import com.plopez.diceroller.microservice.authservice.model.dto.HttpRequestDTO;
 import com.plopez.diceroller.microservice.authservice.model.dto.TokenDTO;
 import com.plopez.diceroller.microservice.authservice.model.entity.AuthUser;
 import com.plopez.diceroller.microservice.authservice.model.repository.AuthUserRepository;
@@ -29,6 +30,7 @@ public class AuthUserService {
         AuthUser authUser = AuthUser.builder()
                 .userName(dto.getUserName())
                 .password(password)
+                .role(dto.getUserName())
                 .build();
         return authUserRepository.save(authUser);
     }
@@ -42,8 +44,8 @@ public class AuthUserService {
         return null;
     }
 
-    public TokenDTO validate(String token) {
-        if(!jsonWebTokenProvider.validate(token))
+    public TokenDTO validate(String token, HttpRequestDTO httpRequestDTO) {
+        if(!jsonWebTokenProvider.validate(token, httpRequestDTO))
             return null;
         String username = jsonWebTokenProvider.getUserNameFromToken(token);
         if(!authUserRepository.findByUserName(username).isPresent())

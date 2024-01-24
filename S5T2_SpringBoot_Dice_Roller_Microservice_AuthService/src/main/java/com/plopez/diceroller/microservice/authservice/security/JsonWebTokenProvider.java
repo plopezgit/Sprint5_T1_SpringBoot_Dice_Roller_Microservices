@@ -1,9 +1,11 @@
 package com.plopez.diceroller.microservice.authservice.security;
 
+import com.plopez.diceroller.microservice.authservice.model.dto.HttpRequestDTO;
 import com.plopez.diceroller.microservice.authservice.model.entity.AuthUser;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import jakarta.annotation.PostConstruct;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -18,6 +20,9 @@ public class JsonWebTokenProvider {
     @Value("${jwt.secret}")
     private String secret;
 
+    @Autowired
+    AuthRouteValidator authRouteValidator;
+
     @PostConstruct
     protected  void initSecret() {
         secret = Base64.getEncoder().encodeToString(secret.getBytes());
@@ -27,6 +32,7 @@ public class JsonWebTokenProvider {
         Map<String, Object> claims = new HashMap<>();
         claims = Jwts.claims().setSubject(authUser.getUserName());
         claims.put("id", authUser.getId());
+        claims.put("role", authUser.getRole());
         Date now = new Date();
         Date expiration = new Date(now.getTime() + 3600000);
 
@@ -38,12 +44,16 @@ public class JsonWebTokenProvider {
                 .compact();
     }
 
-    public boolean validate(String token) {
+    public boolean validate(String token, HttpRequestDTO httpRequestDTO) {
         try {
             Jwts.parser().setSigningKey(secret).parseClaimsJws(token);
-            return true;
         } catch (Exception e) {
             return false;
+        }
+        if(!isAdmin(token) && authRouteValidator.isAdminPath(httpRequestDTO)) {
+            return false;
+        } else {
+            return true;
         }
     }
 
@@ -53,6 +63,10 @@ public class JsonWebTokenProvider {
         } catch (Exception e) {
             return "Invalid token.";
         }
+    }
+
+    private boolean isAdmin(String token) {
+        return Jwts.parser().setSigningKey(secret).parseClaimsJws(token).getBody().get("role").equals("admin");
     }
 
 }

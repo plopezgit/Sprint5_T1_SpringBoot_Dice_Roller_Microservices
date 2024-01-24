@@ -1,6 +1,7 @@
 package com.plopez.diceroller.microservice.authservice.controller;
 
 import com.plopez.diceroller.microservice.authservice.model.dto.AuthUserDTO;
+import com.plopez.diceroller.microservice.authservice.model.dto.HttpRequestDTO;
 import com.plopez.diceroller.microservice.authservice.model.dto.TokenDTO;
 import com.plopez.diceroller.microservice.authservice.model.entity.AuthUser;
 import com.plopez.diceroller.microservice.authservice.model.service.AuthUserService;
@@ -24,8 +25,8 @@ public class AuthUserController {
     }
 
     @PostMapping("/validate")
-    public ResponseEntity<TokenDTO> validate(@RequestParam String token){
-        TokenDTO tokenDto = authUserService.validate(token);
+    public ResponseEntity<TokenDTO> validate(@RequestParam String token, @RequestBody HttpRequestDTO httpRequestDTO){
+        TokenDTO tokenDto = authUserService.validate(token, httpRequestDTO);
         if(tokenDto == null)
             return ResponseEntity.badRequest().build();
         return ResponseEntity.ok(tokenDto);

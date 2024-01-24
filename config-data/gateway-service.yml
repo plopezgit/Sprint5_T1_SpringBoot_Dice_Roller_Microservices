@@ -32,8 +32,6 @@ spring:
 
 
 
-
-
 management:
   tracing:
     sampling:

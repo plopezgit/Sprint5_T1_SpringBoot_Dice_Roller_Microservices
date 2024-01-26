@@ -19,7 +19,7 @@ public class GameController {
     private GameService gameService;
 
     @GetMapping
-    public ResponseEntity<?> getPlayers() {
+    public ResponseEntity<?> getGames() {
         List<GameDTO> gamesDTO = gameService.getGames();
         if (gamesDTO.isEmpty()) {
             return ResponseEntity.noContent().build();
@@ -29,7 +29,7 @@ public class GameController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> getPlayer(@PathVariable int id) {
+    public ResponseEntity<?> getGame(@PathVariable int id) {
         try {
             return ResponseEntity.ok(gameService.getGameBy(id));
         } catch (GameNotFoundException e) {
@@ -38,22 +38,13 @@ public class GameController {
     }
 
     @PostMapping
-    public ResponseEntity<?> createPlayer(@RequestBody GameDTO gameDTO) {
+    public ResponseEntity<?> createGame(@RequestBody GameDTO gameDTO) {
         gameService.createGame(gameDTO);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
-    @PostMapping("/{id}")
-    public ResponseEntity<?> updatePlayer(@PathVariable int id, @RequestBody GameDTO gameDTO) {
-        try {
-            gameService.updateGame(id, gameDTO);
-            return new ResponseEntity<>(HttpStatus.ACCEPTED);
-        } catch (GameNotFoundException e) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);        }
-    }
-
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<?> deletePlayer(@PathVariable int id) {
+    public ResponseEntity<?> deleteGame(@PathVariable int id) {
         gameService.deleteGameBy(id);
         return new ResponseEntity<>(HttpStatus.ACCEPTED);
     }

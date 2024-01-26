@@ -2,6 +2,7 @@ package com.plopez.diceroller.microservice.player.controller;
 
 import com.plopez.diceroller.microservice.player.model.dto.GameDTO;
 import com.plopez.diceroller.microservice.player.model.dto.PlayerDTO;
+import com.plopez.diceroller.microservice.player.model.exception.NickNameAlreadyExistException;
 import com.plopez.diceroller.microservice.player.model.exception.PlayerNotFoundException;
 import com.plopez.diceroller.microservice.player.model.service.PlayerService;
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
@@ -40,8 +41,12 @@ public class PlayerController {
 
     @PostMapping
     public ResponseEntity<?> createPlayer(@RequestBody PlayerDTO playerDTO) {
-        playerService.createPlayer(playerDTO);
-        return new ResponseEntity<>(HttpStatus.CREATED);
+        try {
+            playerService.createPlayer(playerDTO);
+            return new ResponseEntity<>(HttpStatus.CREATED);
+        } catch (NickNameAlreadyExistException e) {
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        }
     }
 
     @PostMapping("/{id}")
@@ -59,11 +64,22 @@ public class PlayerController {
         return new ResponseEntity<>(HttpStatus.ACCEPTED);
     }
 
+    @CircuitBreaker(name="gamesCB", fallbackMethod ="fallbackCreateGame")
+    @PostMapping("/game/{playerId}")
+    public ResponseEntity<?> createGame(@PathVariable("playerId") int playerId, @RequestBody GameDTO gameDTO) {
+        GameDTO newGame = playerService.createGame(playerId, gameDTO);
+        return ResponseEntity.ok(newGame);
+    }
+
     @CircuitBreaker(name="gamesCB", fallbackMethod ="fallbackGetGamesByPlayer")
     @GetMapping("/{playerId}/games")
     public ResponseEntity<?> getGamesByPlayer(@PathVariable int playerId) {
         List<GameDTO> games = playerService.getGamesBy(playerId);
         return ResponseEntity.ok(games);
+    }
+
+    public ResponseEntity<?> fallbackCreateGame(@PathVariable("playerId") int playerId, @RequestBody GameDTO gameDTO, RuntimeException e) {
+        return new ResponseEntity<>("The player: " + playerId + " can not play now. Try later", HttpStatus.OK);
     }
 
     private ResponseEntity<?> fallbackGetGamesByPlayer(@PathVariable int playerId, RuntimeException e) {

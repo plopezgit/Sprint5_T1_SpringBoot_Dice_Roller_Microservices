@@ -47,7 +47,7 @@ public class PlayerService implements PlayerServiceInterface {
             newPlayer = new PlayerDTO(playerDTO.getNickname());
         }
 
-        if (playerRepository.findByNickname(newPlayer.getNickname()).isPresent()
+        if (playerRepository.existsByNickname(newPlayer.getNickname())
                 && !newPlayer.getNickname().equalsIgnoreCase("Anonymous")) {
             throw new NickNameAlreadyExistException("The nickname already exist, please try another one.");
         }

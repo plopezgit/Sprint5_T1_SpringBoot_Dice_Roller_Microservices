@@ -49,7 +49,7 @@ public class PlayerController {
         }
     }
 
-    @PostMapping("/{id}")
+    @PostMapping("update/{id}")
     public ResponseEntity<?> updatePlayer(@PathVariable int id, @RequestBody PlayerDTO playerDTO) {
         try {
             playerService.updatePlayer(id, playerDTO);

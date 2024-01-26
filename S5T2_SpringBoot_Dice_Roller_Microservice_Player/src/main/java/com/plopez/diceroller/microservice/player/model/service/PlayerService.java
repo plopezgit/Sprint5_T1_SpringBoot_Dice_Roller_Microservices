@@ -1,6 +1,5 @@
 package com.plopez.diceroller.microservice.player.model.service;
 
-import com.plopez.diceroller.microservice.player.model.client.GameClient;
 import com.plopez.diceroller.microservice.player.model.dto.GameDTO;
 import com.plopez.diceroller.microservice.player.model.dto.PlayerDTO;
 import com.plopez.diceroller.microservice.player.model.entity.Player;
@@ -26,9 +25,6 @@ public class PlayerService implements PlayerServiceInterface {
 
     @Autowired
     private RestTemplate restTemplate;
-
-    @Autowired
-    private GameClient gameClient;
 
     @Override
     public List<PlayerDTO> getPlayers() {
@@ -77,9 +73,8 @@ public class PlayerService implements PlayerServiceInterface {
     }
 
     @Override
-    public GameDTO createGame(int playerId, GameDTO gameDTO) {
-        gameDTO = new GameDTO(playerId);
-        return gameClient.createGame(gameDTO);
+    public GameDTO createGameBy(int playerId) {
+        return restTemplate.postForObject("http://game-service/games/player/" + playerId, new GameDTO(), GameDTO.class);
     }
 
     private PlayerDTO getPlayerDTOFromEntity(Player player) {

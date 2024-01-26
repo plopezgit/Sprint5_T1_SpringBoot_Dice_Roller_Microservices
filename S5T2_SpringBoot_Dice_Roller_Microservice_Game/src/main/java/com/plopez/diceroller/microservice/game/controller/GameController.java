@@ -59,4 +59,10 @@ public class GameController {
         }
     }
 
+    @PostMapping("player/{playerId}")
+    public ResponseEntity<?> createGameBy(@PathVariable int playerId) {
+        gameService.createGameBy(playerId);
+        return new ResponseEntity<>(HttpStatus.CREATED);
+    }
+
 }

@@ -38,6 +38,11 @@ public class GameService implements GameServiceInterface {
     }
 
     @Override
+    public void createGameBy(int playerId) {
+        gameRepository.save(getGameEntityFromDTO(new GameDTO(playerId)));
+    }
+
+    @Override
     public void deleteGameBy(int id) {
         gameRepository.deleteById(id);
     }

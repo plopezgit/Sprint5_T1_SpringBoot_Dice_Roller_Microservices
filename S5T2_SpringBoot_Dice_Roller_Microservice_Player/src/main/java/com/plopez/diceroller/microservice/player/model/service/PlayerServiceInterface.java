@@ -16,5 +16,5 @@ public interface PlayerServiceInterface {
     void updatePlayer(int id, PlayerDTO playerDTO) throws PlayerNotFoundException;
     void deletePlayerBy(int id);
     List<GameDTO> getGamesBy(int playerId);
-    GameDTO createGame (int playerId, GameDTO gameDTO);
+    GameDTO createGameBy (int playerId);
 }

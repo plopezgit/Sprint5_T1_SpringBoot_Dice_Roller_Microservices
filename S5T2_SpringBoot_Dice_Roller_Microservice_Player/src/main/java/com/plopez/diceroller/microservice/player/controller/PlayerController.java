@@ -64,10 +64,10 @@ public class PlayerController {
         return new ResponseEntity<>(HttpStatus.ACCEPTED);
     }
 
-    @CircuitBreaker(name="gamesCB", fallbackMethod ="fallbackCreateGame")
+    @CircuitBreaker(name="gamesCB", fallbackMethod ="fallbackCreateGameBy")
     @PostMapping("/game/{playerId}")
-    public ResponseEntity<?> createGame(@PathVariable("playerId") int playerId, @RequestBody GameDTO gameDTO) {
-        GameDTO newGame = playerService.createGame(playerId, gameDTO);
+    public ResponseEntity<?> createGameBy(@PathVariable int playerId) {
+        GameDTO newGame = playerService.createGameBy(playerId);
         return ResponseEntity.ok(newGame);
     }
 
@@ -78,7 +78,7 @@ public class PlayerController {
         return ResponseEntity.ok(games);
     }
 
-    public ResponseEntity<?> fallbackCreateGame(@PathVariable("playerId") int playerId, @RequestBody GameDTO gameDTO, RuntimeException e) {
+    public ResponseEntity<?> fallbackCreateGameBy(@PathVariable("playerId") int playerId, RuntimeException e) {
         return new ResponseEntity<>("The player: " + playerId + " can not play now. Try later", HttpStatus.OK);
     }
 

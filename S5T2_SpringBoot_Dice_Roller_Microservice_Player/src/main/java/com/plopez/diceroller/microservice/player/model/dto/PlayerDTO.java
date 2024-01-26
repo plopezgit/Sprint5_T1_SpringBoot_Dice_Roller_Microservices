@@ -18,7 +18,6 @@ public class PlayerDTO {
 
     public PlayerDTO(String nickname) {
         this.nickname = nickname;
-        this.registrationTimeStamp = LocalDateTime.now();
         this.gameSuccessRate = 0;
     }
 

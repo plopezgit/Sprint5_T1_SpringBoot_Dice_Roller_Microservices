@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+//import java.util.Random;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -18,6 +20,6 @@ public class Game {
     private int playerId;
     private byte die1;
     private byte die2;
-    private String result;
+    private byte result;
 
 }

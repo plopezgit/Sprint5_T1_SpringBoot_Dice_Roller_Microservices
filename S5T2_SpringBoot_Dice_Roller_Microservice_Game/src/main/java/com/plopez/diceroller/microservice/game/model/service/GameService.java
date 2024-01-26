@@ -34,16 +34,12 @@ public class GameService implements GameServiceInterface {
 
     @Override
     public void createGame(GameDTO gameDTO) {
-        gameRepository.save(getGameEntityFromDTO(gameDTO));
+        gameRepository.save(getGameEntityFromDTO(new GameDTO(gameDTO.getPlayerId())));
     }
 
     @Override
-    public void updateGame(int id, GameDTO gameDTO) throws GameNotFoundException {
-        GameDTO game = getGameBy(id);
-        game.setDie1(gameDTO.getDie1());
-        game.setDie2(gameDTO.getDie2());
-        game.setResult(gameDTO.getResult());
-        gameRepository.save(getGameEntityFromDTO(game));
+    public void createGameBy(int playerId) {
+        gameRepository.save(getGameEntityFromDTO(new GameDTO(playerId)));
     }
 
     @Override

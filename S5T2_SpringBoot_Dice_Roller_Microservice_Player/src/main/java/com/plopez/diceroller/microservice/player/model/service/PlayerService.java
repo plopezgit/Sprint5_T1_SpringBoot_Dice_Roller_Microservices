@@ -14,7 +14,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -87,22 +89,24 @@ public class PlayerService implements PlayerServiceInterface, GameClientServiceI
         playerRepository.save(getPlayerEntityFromDTO(player));
     }
 
-    //ToDo
     @Override
     public float getTotalPlayersWinningAverage() {
-        return 0;
-    }
-    //ToDo
-    @Override
-    public PlayerDTO getPlayerMostLoser() {
-        return null;
-    }
-    //ToDo
-    @Override
-    public PlayerDTO getPlayerMostWinner() {
-        return null;
+        List<PlayerDTO> players = getPlayers();
+        float sum = players.stream()
+                .map(PlayerDTO::getGameSuccessRate)
+                .reduce(0f, Float::sum);
+        return sum / players.size();
     }
 
+    @Override
+    public Optional<PlayerDTO> getPlayerMostLoser() {
+        return getPlayers().stream().min((Comparator.comparing(PlayerDTO::getGameSuccessRate)));
+    }
+
+    @Override
+    public Optional<PlayerDTO> getPlayerMostWinner() {
+        return getPlayers().stream().max((Comparator.comparing(PlayerDTO::getGameSuccessRate)));
+    }
 
     private PlayerDTO getPlayerDTOFromEntity(Player player) {
         return playerModelMapper.map(player, PlayerDTO.class);
@@ -111,5 +115,4 @@ public class PlayerService implements PlayerServiceInterface, GameClientServiceI
     private Player getPlayerEntityFromDTO(PlayerDTO flowerDTO) {
         return playerModelMapper.map(flowerDTO, Player.class);
     }
-
 }

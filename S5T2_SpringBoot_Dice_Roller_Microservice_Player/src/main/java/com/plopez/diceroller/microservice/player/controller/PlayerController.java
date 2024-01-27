@@ -68,6 +68,21 @@ public class PlayerController {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);        }
     }
 
+    @GetMapping("/ranking")
+    public ResponseEntity<?> getTotalPlayersWinningAverage() {
+        return ResponseEntity.ok(playerService.getTotalPlayersWinningAverage());
+    }
+
+    @GetMapping("/ranking/loser")
+    public ResponseEntity<?> getPlayerMostLoser() {
+        return ResponseEntity.ok(playerService.getPlayerMostLoser());
+    }
+
+    @GetMapping("/ranking/winner")
+    public ResponseEntity<?> getPlayerMostWinner() {
+        return ResponseEntity.ok(playerService.getPlayerMostWinner());
+    }
+
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<?> deletePlayer(@PathVariable int id) {
         playerService.deletePlayerBy(id);

@@ -48,11 +48,15 @@ public class GameService implements GameServiceInterface, PlayerClientServiceInt
     }
 
     @Override
+    public void deleteGamesBy(int playerId) {
+    }
+
+    @Override
     public void updatePlayerSuccessRate(int playerId) {
         List<GameDTO> games = findGamesByPlayerId(playerId);
         float rate = (float) games.stream()
                 .mapToInt(GameDTO::getResult)
-                .sum() / games.size() ;
+                .sum() / games.size();
         restTemplate.postForObject("http://player-service/players/update/rate/" + playerId, rate, PlayerDTO.class);
     }
 

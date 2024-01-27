@@ -28,7 +28,7 @@
 - [x] POST /players/{id}/games/ : A specific player rolls the dice.
 - [x] GET /players/: returns the list of all the players in the system with their average success rate.
 - [x] GET /players/{id}/games: returns the list of games played by a player. Ok
-- [ ] DELETE /players/{id}/games: deletes the player's rolls.
+- [x] DELETE /players/{id}/games: deletes the player's rolls.
 - [x] GET /players/ranking: returns the average ranking of all the players in the system. That is, the average percentage of successes.  
 - [x] GET /players/ranking/loser: returns the player with the worst hit percentage.
 - [x] GET /players/ranking/winner: Returns the player with the worst hit percentage.

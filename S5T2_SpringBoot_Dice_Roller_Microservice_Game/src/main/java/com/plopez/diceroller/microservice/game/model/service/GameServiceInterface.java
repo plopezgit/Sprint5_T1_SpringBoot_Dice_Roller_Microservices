@@ -10,8 +10,7 @@ public interface GameServiceInterface {
 
     List<GameDTO> getGames();
     GameDTO getGameBy(int id) throws GameNotFoundException;
-    void createGame(GameDTO gameDTO);
+    void deleteGamesBy(int playerId);
     void createGameBy(int playerId);
-    void deleteGameBy(int id);
     List<GameDTO> findGamesByPlayerId (int playerId) throws GameNotFoundException;
 }

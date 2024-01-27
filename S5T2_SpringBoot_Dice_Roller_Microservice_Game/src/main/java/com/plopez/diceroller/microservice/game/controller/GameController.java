@@ -37,15 +37,9 @@ public class GameController {
         }
     }
 
-    @PostMapping
-    public ResponseEntity<?> createGame(@RequestBody GameDTO gameDTO) {
-        gameService.createGame(gameDTO);
-        return new ResponseEntity<>(HttpStatus.CREATED);
-    }
-
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<?> deleteGame(@PathVariable int id) {
-        gameService.deleteGameBy(id);
+    public ResponseEntity<?> deleteGames(@PathVariable int id) {
+        gameService.deleteGamesBy(id);
         return new ResponseEntity<>(HttpStatus.ACCEPTED);
     }
 

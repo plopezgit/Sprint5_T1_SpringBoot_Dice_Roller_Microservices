@@ -8,4 +8,5 @@ import java.util.List;
 public interface GameClientServiceInterface {
     List<GameDTO> getGamesBy(int playerId);
     GameDTO createGameBy (int playerId) throws PlayerNotFoundException;
+    void deleteGamesBy(int playerId);
 }

@@ -10,4 +10,5 @@ import java.util.List;
 public interface GameRepository extends JpaRepository<Game, Integer> {
 
     List<Game> findGamesByPlayerId(int playerId);
+    void deleteGamesByPlayerId(int playerId);
 }

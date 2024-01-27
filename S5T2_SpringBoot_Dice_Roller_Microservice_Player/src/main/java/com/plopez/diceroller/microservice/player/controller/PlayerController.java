@@ -68,6 +68,21 @@ public class PlayerController {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);        }
     }
 
+    @GetMapping("/ranking")
+    public ResponseEntity<?> getTotalPlayersWinningAverage() {
+        return ResponseEntity.ok(playerService.getTotalPlayersWinningAverage());
+    }
+
+    @GetMapping("/ranking/loser")
+    public ResponseEntity<?> getPlayerMostLoser() {
+        return ResponseEntity.ok(playerService.getPlayerMostLoser());
+    }
+
+    @GetMapping("/ranking/winner")
+    public ResponseEntity<?> getPlayerMostWinner() {
+        return ResponseEntity.ok(playerService.getPlayerMostWinner());
+    }
+
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<?> deletePlayer(@PathVariable int id) {
         playerService.deletePlayerBy(id);
@@ -84,6 +99,13 @@ public class PlayerController {
         }
     }
 
+    @CircuitBreaker(name="gamesCB", fallbackMethod ="fallbackDeleteGamesBy")
+    @DeleteMapping("/games/{id}")
+    public ResponseEntity<?> deleteGamesBy(@PathVariable int id) {
+        playerService.deleteGamesBy(id);
+        return new ResponseEntity<>(HttpStatus.ACCEPTED);
+    }
+
     @CircuitBreaker(name="gamesCB", fallbackMethod ="fallbackGetGamesByPlayer")
     @GetMapping("/{playerId}/games")
     public ResponseEntity<?> getGamesByPlayer(@PathVariable int playerId) {
@@ -96,6 +118,10 @@ public class PlayerController {
     }
 
     private ResponseEntity<?> fallbackGetGamesByPlayer(@PathVariable int playerId, RuntimeException e) {
-        return new ResponseEntity<>("The player: " + playerId + " does not have games yet.", HttpStatus.OK);
+        return new ResponseEntity<>("The player: " + playerId + " does not have games yet,does not have games yet, or game delete service is not available now.", HttpStatus.OK);
+    }
+
+    private ResponseEntity<?> fallbackDeleteGamesBy(@PathVariable int playerId, RuntimeException e) {
+        return new ResponseEntity<>("The player: " + playerId + " does not have games yet, or game delete service is not available now.", HttpStatus.OK);
     }
 }

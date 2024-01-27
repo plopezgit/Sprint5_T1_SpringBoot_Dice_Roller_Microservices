@@ -15,6 +15,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/players")
+@SuppressWarnings("unused")
 public class PlayerController {
 
     @Autowired
@@ -50,9 +51,18 @@ public class PlayerController {
     }
 
     @PostMapping("update/{id}")
-    public ResponseEntity<?> updatePlayer(@PathVariable int id, @RequestBody PlayerDTO playerDTO) {
+    public ResponseEntity<?> updatePlayerNickname(@PathVariable int id, @RequestBody PlayerDTO playerDTO) {
         try {
-            playerService.updatePlayer(id, playerDTO);
+            playerService.updatePlayerNickname(id, playerDTO);
+            return new ResponseEntity<>(HttpStatus.ACCEPTED);
+        } catch (PlayerNotFoundException e) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);        }
+    }
+
+    @PostMapping("update/rate/{id}")
+    public ResponseEntity<?> updatePlayerSuccessRate(@PathVariable int id, @RequestBody float rate) {
+        try {
+            playerService.updatePlayerSuccessRate(id, rate);
             return new ResponseEntity<>(HttpStatus.ACCEPTED);
         } catch (PlayerNotFoundException e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);        }
@@ -67,8 +77,11 @@ public class PlayerController {
     @CircuitBreaker(name="gamesCB", fallbackMethod ="fallbackCreateGameBy")
     @PostMapping("/game/{playerId}")
     public ResponseEntity<?> createGameBy(@PathVariable int playerId) {
-        GameDTO newGame = playerService.createGameBy(playerId);
-        return ResponseEntity.ok(newGame);
+        try {
+            return ResponseEntity.ok(playerService.createGameBy(playerId));
+        } catch (PlayerNotFoundException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 
     @CircuitBreaker(name="gamesCB", fallbackMethod ="fallbackGetGamesByPlayer")

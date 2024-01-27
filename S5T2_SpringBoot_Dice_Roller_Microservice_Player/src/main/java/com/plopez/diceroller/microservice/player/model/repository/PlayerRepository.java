@@ -9,7 +9,6 @@ import java.util.Optional;
 @SuppressWarnings("unused")
 @Repository
 public interface PlayerRepository extends JpaRepository<Player, Integer> {
-
     Optional<Player> findByNickname(String nickname);
     boolean existsByNickname(String nickname);
 }

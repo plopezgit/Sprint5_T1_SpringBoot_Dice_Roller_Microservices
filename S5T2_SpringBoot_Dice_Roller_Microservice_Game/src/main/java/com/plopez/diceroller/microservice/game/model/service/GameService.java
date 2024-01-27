@@ -1,24 +1,29 @@
 package com.plopez.diceroller.microservice.game.model.service;
 
 import com.plopez.diceroller.microservice.game.model.dto.GameDTO;
+import com.plopez.diceroller.microservice.game.model.dto.PlayerDTO;
 import com.plopez.diceroller.microservice.game.model.entity.Game;
 import com.plopez.diceroller.microservice.game.model.exception.GameNotFoundException;
 import com.plopez.diceroller.microservice.game.model.repository.GameRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-public class GameService implements GameServiceInterface {
+public class GameService implements GameServiceInterface, PlayerClientServiceInterface {
 
     @Autowired
     private GameRepository gameRepository;
 
     @Autowired
     private ModelMapper gameModelMapper;
+
+    @Autowired
+    private RestTemplate restTemplate;
 
     @Override
     public List<GameDTO> getGames() {
@@ -43,14 +48,23 @@ public class GameService implements GameServiceInterface {
     }
 
     @Override
+    public void updatePlayerSuccessRate(int playerId) {
+        List<GameDTO> games = findGamesByPlayerId(playerId);
+        float rate = (float) games.stream()
+                .mapToInt(GameDTO::getResult)
+                .sum() / games.size() ;
+        restTemplate.postForObject("http://player-service/players/update/rate/" + playerId, rate, PlayerDTO.class);
+    }
+
+    @Override
     public void deleteGameBy(int id) {
         gameRepository.deleteById(id);
     }
 
     @Override
     public List<GameDTO> findGamesByPlayerId(int playerId) {
-        List<Game> players = gameRepository.findGamesByPlayerId(playerId);
-        return players.stream().map(this::getGameDTOFromEntity).collect(Collectors.toList());
+        List<Game> games = gameRepository.findGamesByPlayerId(playerId);
+        return games.stream().map(this::getGameDTOFromEntity).collect(Collectors.toList());
     }
 
     private GameDTO getGameDTOFromEntity(Game game) {
@@ -60,5 +74,6 @@ public class GameService implements GameServiceInterface {
     private Game getGameEntityFromDTO(GameDTO gameDTO) {
         return gameModelMapper.map(gameDTO, Game.class);
     }
+
 
 }

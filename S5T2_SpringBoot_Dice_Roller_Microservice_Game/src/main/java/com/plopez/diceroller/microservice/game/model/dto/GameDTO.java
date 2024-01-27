@@ -13,9 +13,9 @@ public class GameDTO {
 
     private int id;
     private int playerId;
-    private byte die1;
-    private byte die2;
-    private byte result;
+    private int die1;
+    private int die2;
+    private int result;
 
     public GameDTO(int playerId) {
         this.playerId = playerId;
@@ -24,13 +24,13 @@ public class GameDTO {
         result = setResult();
     }
 
-    private byte rollDie() {
+    private int rollDie() {
         Random random = new Random();
-        byte die = (byte) (random.nextInt(6)+1);
+        int die = (random.nextInt(6)+1);
         return die;
     }
 
-    public byte setResult () {
+    public int setResult () {
         if ((die1 + die2)!=7) {
             return 0;
         } else {

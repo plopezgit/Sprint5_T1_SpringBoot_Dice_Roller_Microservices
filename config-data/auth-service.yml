@@ -18,6 +18,10 @@ eureka:
         method: "PUT"
       - uri: "/players/update/{1}[1-9]+[0-9]*"
         method: "POST"
+      - uri: "/players/update/rate/{1}[1-9]+[0-9]*"
+        method: "POST"
+      - uri: "/players/{1}[1-9]+[0-9]*"
+        method: "DELETE"
       - uri: "/players/{1}[1-9]+[0-9]*"
         method: "DELETE"
 

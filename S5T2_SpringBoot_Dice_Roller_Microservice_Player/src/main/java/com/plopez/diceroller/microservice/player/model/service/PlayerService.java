@@ -6,6 +6,9 @@ import com.plopez.diceroller.microservice.player.model.entity.Player;
 import com.plopez.diceroller.microservice.player.model.exception.NickNameAlreadyExistException;
 import com.plopez.diceroller.microservice.player.model.exception.PlayerNotFoundException;
 import com.plopez.diceroller.microservice.player.model.repository.PlayerRepository;
+import com.plopez.diceroller.microservice.player.model.service.interfaces.GameClientServiceInterface;
+import com.plopez.diceroller.microservice.player.model.service.interfaces.PlayerRankingInformationServiceInterface;
+import com.plopez.diceroller.microservice.player.model.service.interfaces.PlayerServiceInterface;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,7 +18,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-public class PlayerService implements PlayerServiceInterface {
+public class PlayerService implements PlayerServiceInterface, GameClientServiceInterface, PlayerRankingInformationServiceInterface {
 
     @Autowired
     private PlayerRepository playerRepository;
@@ -56,7 +59,7 @@ public class PlayerService implements PlayerServiceInterface {
     }
 
     @Override
-    public void updatePlayer(int id, PlayerDTO playerDTO) throws PlayerNotFoundException {
+    public void updatePlayerNickname(int id, PlayerDTO playerDTO) throws PlayerNotFoundException {
         PlayerDTO player = getPlayerBy(id);
         player.setNickname(playerDTO.getNickname());
         playerRepository.save(getPlayerEntityFromDTO(player));
@@ -68,14 +71,38 @@ public class PlayerService implements PlayerServiceInterface {
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public List<GameDTO> getGamesBy(int playerId) {
         return restTemplate.getForObject("http://game-service/games/player/" + playerId, List.class);
     }
 
     @Override
-    public GameDTO createGameBy(int playerId) {
+    public GameDTO createGameBy(int playerId) throws PlayerNotFoundException {
         return restTemplate.postForObject("http://game-service/games/player/" + playerId, new GameDTO(), GameDTO.class);
     }
+
+    public void updatePlayerSuccessRate(int playerId, float rate) throws PlayerNotFoundException {
+        PlayerDTO player = getPlayerBy(playerId);
+        player.setGameSuccessRate(rate);
+        playerRepository.save(getPlayerEntityFromDTO(player));
+    }
+
+    //ToDo
+    @Override
+    public float getTotalPlayersWinningAverage() {
+        return 0;
+    }
+    //ToDo
+    @Override
+    public PlayerDTO getPlayerMostLoser() {
+        return null;
+    }
+    //ToDo
+    @Override
+    public PlayerDTO getPlayerMostWinner() {
+        return null;
+    }
+
 
     private PlayerDTO getPlayerDTOFromEntity(Player player) {
         return playerModelMapper.map(player, PlayerDTO.class);
@@ -84,6 +111,5 @@ public class PlayerService implements PlayerServiceInterface {
     private Player getPlayerEntityFromDTO(PlayerDTO flowerDTO) {
         return playerModelMapper.map(flowerDTO, Player.class);
     }
-
 
 }

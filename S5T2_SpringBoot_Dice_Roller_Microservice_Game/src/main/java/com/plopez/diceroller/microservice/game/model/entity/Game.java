@@ -18,8 +18,8 @@ public class Game {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private int playerId;
-    private byte die1;
-    private byte die2;
-    private byte result;
+    private int die1;
+    private int die2;
+    private int result;
 
 }

@@ -99,6 +99,13 @@ public class PlayerController {
         }
     }
 
+    @CircuitBreaker(name="gamesCB", fallbackMethod ="fallbackDeleteGamesBy")
+    @DeleteMapping("/games/{id}")
+    public ResponseEntity<?> deleteGamesBy(@PathVariable int id) {
+        playerService.deleteGamesBy(id);
+        return new ResponseEntity<>(HttpStatus.ACCEPTED);
+    }
+
     @CircuitBreaker(name="gamesCB", fallbackMethod ="fallbackGetGamesByPlayer")
     @GetMapping("/{playerId}/games")
     public ResponseEntity<?> getGamesByPlayer(@PathVariable int playerId) {
@@ -111,6 +118,10 @@ public class PlayerController {
     }
 
     private ResponseEntity<?> fallbackGetGamesByPlayer(@PathVariable int playerId, RuntimeException e) {
-        return new ResponseEntity<>("The player: " + playerId + " does not have games yet.", HttpStatus.OK);
+        return new ResponseEntity<>("The player: " + playerId + " does not have games yet,does not have games yet, or game delete service is not available now.", HttpStatus.OK);
+    }
+
+    private ResponseEntity<?> fallbackDeleteGamesBy(@PathVariable int playerId, RuntimeException e) {
+        return new ResponseEntity<>("The player: " + playerId + " does not have games yet, or game delete service is not available now.", HttpStatus.OK);
     }
 }

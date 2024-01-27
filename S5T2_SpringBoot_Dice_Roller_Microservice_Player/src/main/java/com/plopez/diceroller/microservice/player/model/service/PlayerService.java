@@ -90,6 +90,11 @@ public class PlayerService implements PlayerServiceInterface, GameClientServiceI
     }
 
     @Override
+    public void deleteGamesBy(int playerId) {
+        restTemplate.delete("http://game-service/games/delete/" + playerId);
+    }
+
+    @Override
     public float getTotalPlayersWinningAverage() {
         List<PlayerDTO> players = getPlayers();
         float sum = players.stream()

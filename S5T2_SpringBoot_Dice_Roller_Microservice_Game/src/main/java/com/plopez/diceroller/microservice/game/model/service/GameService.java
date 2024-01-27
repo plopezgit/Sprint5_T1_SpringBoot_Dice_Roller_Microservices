@@ -8,11 +8,13 @@ import com.plopez.diceroller.microservice.game.model.repository.GameRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Transactional
 @Service
 public class GameService implements GameServiceInterface, PlayerClientServiceInterface {
 
@@ -38,17 +40,13 @@ public class GameService implements GameServiceInterface, PlayerClientServiceInt
     }
 
     @Override
-    public void createGame(GameDTO gameDTO) {
-        gameRepository.save(getGameEntityFromDTO(new GameDTO(gameDTO.getPlayerId())));
-    }
-
-    @Override
     public void createGameBy(int playerId) {
         gameRepository.save(getGameEntityFromDTO(new GameDTO(playerId)));
     }
 
     @Override
     public void deleteGamesBy(int playerId) {
+        gameRepository.deleteGamesByPlayerId(playerId);
     }
 
     @Override
@@ -58,11 +56,6 @@ public class GameService implements GameServiceInterface, PlayerClientServiceInt
                 .mapToInt(GameDTO::getResult)
                 .sum() / games.size();
         restTemplate.postForObject("http://player-service/players/update/rate/" + playerId, rate, PlayerDTO.class);
-    }
-
-    @Override
-    public void deleteGameBy(int id) {
-        gameRepository.deleteById(id);
     }
 
     @Override

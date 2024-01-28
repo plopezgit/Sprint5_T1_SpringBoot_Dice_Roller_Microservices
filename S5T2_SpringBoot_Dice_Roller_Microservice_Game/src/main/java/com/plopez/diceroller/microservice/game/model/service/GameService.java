@@ -5,6 +5,8 @@ import com.plopez.diceroller.microservice.game.model.dto.PlayerDTO;
 import com.plopez.diceroller.microservice.game.model.entity.Game;
 import com.plopez.diceroller.microservice.game.model.exception.GameNotFoundException;
 import com.plopez.diceroller.microservice.game.model.repository.GameRepository;
+import com.plopez.diceroller.microservice.game.model.service.interfaces.GameServiceInterface;
+import com.plopez.diceroller.microservice.game.model.service.interfaces.PlayerClientServiceInterface;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

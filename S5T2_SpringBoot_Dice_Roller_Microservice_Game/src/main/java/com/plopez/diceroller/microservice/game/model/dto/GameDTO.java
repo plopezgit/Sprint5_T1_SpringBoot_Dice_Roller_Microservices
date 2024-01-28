@@ -1,6 +1,7 @@
 package com.plopez.diceroller.microservice.game.model.dto;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -9,6 +10,7 @@ import java.util.Random;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class GameDTO {
 
     private int id;

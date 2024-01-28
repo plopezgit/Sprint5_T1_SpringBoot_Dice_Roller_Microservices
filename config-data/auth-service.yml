@@ -23,9 +23,11 @@ eureka:
       - uri: "/players/games/{1}[1-9]+[0-9]*"
         method: "DELETE"
 
-
-
-
+spring:
+  data:
+    host: localhost
+    port: 27017
+    database: auth
 
 
 management:

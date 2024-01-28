@@ -45,12 +45,8 @@ public class PlayerService implements PlayerServiceInterface, GameClientServiceI
 
     @Override
     public void createPlayer(PlayerDTO playerDTO) throws NickNameAlreadyExistException {
-        PlayerDTO newPlayer;
-        if (playerDTO.getNickname().isEmpty() || playerDTO.getNickname().isBlank()) {
-            newPlayer = new PlayerDTO("Anonymous");
-        } else {
-            newPlayer = new PlayerDTO(playerDTO.getNickname());
-        }
+        PlayerDTO newPlayer = (playerDTO.getNickname().isEmpty() || playerDTO.getNickname().isBlank()) ?
+                new PlayerDTO("Anonymous") : new PlayerDTO(playerDTO.getNickname());
 
         if (playerRepository.existsByNickname(newPlayer.getNickname())
                 && !newPlayer.getNickname().equalsIgnoreCase("Anonymous")) {

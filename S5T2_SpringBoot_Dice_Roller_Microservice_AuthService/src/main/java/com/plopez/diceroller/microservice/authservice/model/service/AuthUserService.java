@@ -30,7 +30,7 @@ public class AuthUserService {
         AuthUser authUser = AuthUser.builder()
                 .userName(dto.getUserName())
                 .password(password)
-                .role(dto.getUserName())
+                .role(dto.getRole())
                 .build();
         return authUserRepository.save(authUser);
     }

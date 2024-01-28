@@ -1,4 +1,4 @@
-package com.plopez.diceroller.microservice.game.model.service;
+package com.plopez.diceroller.microservice.game.model.service.interfaces;
 
 import com.plopez.diceroller.microservice.game.model.dto.GameDTO;
 import com.plopez.diceroller.microservice.game.model.exception.GameNotFoundException;

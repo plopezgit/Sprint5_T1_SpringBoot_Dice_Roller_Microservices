@@ -25,17 +25,11 @@ public class GameDTO {
     }
 
     private int rollDie() {
-        Random random = new Random();
-        int die = (random.nextInt(6)+1);
-        return die;
+        return new Random().nextInt(6)+1;
     }
 
-    public int setResult () {
-        if ((die1 + die2)!=7) {
-            return 0;
-        } else {
-            return 1;
-        }
+    private int setResult () {
+        return (die1 + die2) != 7 ? 0 : 1;
     }
 
 }

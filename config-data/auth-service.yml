@@ -23,6 +23,18 @@ eureka:
       - uri: "/players/games/{1}[1-9]+[0-9]*"
         method: "DELETE"
 
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/auth
+    username:
+    password:
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+      dialect: org.hibernate.dialect.PostgreSQLDialect
+      format-sql: true
 
 
 

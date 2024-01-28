@@ -8,7 +8,7 @@ import java.util.Optional;
 
 @SuppressWarnings("unused")
 @Repository
-public interface PlayerMySQLRepository extends JpaRepository<Player, Integer> {
+public interface PlayerRepository extends JpaRepository<Player, Integer> {
     Optional<Player> findByNickname(String nickname);
     boolean existsByNickname(String nickname);
 }

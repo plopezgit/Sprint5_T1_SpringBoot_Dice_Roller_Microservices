@@ -36,7 +36,7 @@
 - [x] Phase 1
 • Persistence: Use MySQL as the database.
 
-- [ ] Phase 2
+- [x] Phase 2
 • Change everything you need and use MongoDB to persist data.
 
 - [x] Phase 3

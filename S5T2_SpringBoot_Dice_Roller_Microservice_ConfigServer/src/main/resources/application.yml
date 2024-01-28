@@ -5,7 +5,7 @@ spring:
     config:
       server:
         git:
-          default-label: rest-template
+          default-label: persistence-diversification
           uri: https://github.com/plopezgit/Sprint5_T1_SpringBoot_Dice_Roller_Microservices
           search-paths: config-data
 

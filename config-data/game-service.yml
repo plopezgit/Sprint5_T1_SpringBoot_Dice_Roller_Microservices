@@ -11,10 +11,6 @@ eureka:
 spring:
   application:
     zipkin: http://localhost:9411
-  data:
-    mongodb: localhost
-    port: 27017
-    database: game
 
 management:
   tracing:

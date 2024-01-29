@@ -45,14 +45,9 @@ public class PlayerService implements PlayerServiceInterface, GameClientServiceI
 
     @Override
     public void createPlayer(PlayerDTO playerDTO) throws NickNameAlreadyExistException {
-        PlayerDTO newPlayer = (playerDTO.getNickname().isEmpty() || playerDTO.getNickname().isBlank()) ?
-                new PlayerDTO("Anonymous") : new PlayerDTO(playerDTO.getNickname());
-
-        if (playerRepository.existsByNickname(newPlayer.getNickname())
-                && !newPlayer.getNickname().equalsIgnoreCase("Anonymous")) {
+        PlayerDTO newPlayer = setNicknameTo(playerDTO);
+        if (exist(newPlayer) && !isAnonymous(newPlayer))
             throw new NickNameAlreadyExistException("The nickname already exist, please try another one.");
-        }
-
         playerRepository.save(getPlayerEntityFromDTO(newPlayer));
     }
 
@@ -79,6 +74,7 @@ public class PlayerService implements PlayerServiceInterface, GameClientServiceI
         return restTemplate.postForObject("http://game-service/games/player/" + playerId, new GameDTO(), GameDTO.class);
     }
 
+    @Override
     public void updatePlayerSuccessRate(int playerId, float rate) throws PlayerNotFoundException {
         PlayerDTO player = getPlayerBy(playerId);
         player.setGameSuccessRate(rate);
@@ -93,9 +89,7 @@ public class PlayerService implements PlayerServiceInterface, GameClientServiceI
     @Override
     public float getTotalPlayersWinningAverage() {
         List<PlayerDTO> players = getPlayers();
-        float sum = players.stream()
-                .map(PlayerDTO::getGameSuccessRate)
-                .reduce(0f, Float::sum);
+        float sum = players.stream().map(PlayerDTO::getGameSuccessRate).reduce(0f, Float::sum);
         return sum / players.size();
     }
 
@@ -115,5 +109,23 @@ public class PlayerService implements PlayerServiceInterface, GameClientServiceI
 
     private Player getPlayerEntityFromDTO(PlayerDTO flowerDTO) {
         return playerModelMapper.map(flowerDTO, Player.class);
+    }
+
+    private boolean isNicknameEmptyOf(PlayerDTO playerToCheck) {
+        return playerToCheck.getNickname().isEmpty() || playerToCheck.getNickname().isBlank();
+    }
+
+    private boolean exist(PlayerDTO playerToCheck) {
+        return playerRepository.existsByNickname(playerToCheck.getNickname());
+    }
+
+    private boolean isAnonymous(PlayerDTO playerToCheck) {
+        return playerToCheck.getNickname().equalsIgnoreCase("Anonymous");
+    }
+
+    private PlayerDTO setNicknameTo (PlayerDTO playerToSet) {
+        return isNicknameEmptyOf(playerToSet) ?
+                PlayerDTO.builder().nickname("Anonymous").build() :
+                PlayerDTO.builder().nickname(playerToSet.getNickname()).build();
     }
 }

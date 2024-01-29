@@ -37,7 +37,7 @@ public class GameController {
         }
     }
 
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("{id}/delete")
     public ResponseEntity<?> deleteGames(@PathVariable int id) {
         gameService.deleteGamesBy(id);
         return new ResponseEntity<>(HttpStatus.ACCEPTED);
@@ -53,7 +53,7 @@ public class GameController {
         }
     }
 
-    @PostMapping("player/{playerId}")
+    @PostMapping("/{playerId}/player")
     public ResponseEntity<?> createGameBy(@PathVariable int playerId) {
         gameService.createGameBy(playerId);
         gameService.updatePlayerSuccessRate(playerId);

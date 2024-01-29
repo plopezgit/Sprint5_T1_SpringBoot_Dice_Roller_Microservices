@@ -90,7 +90,7 @@ public class PlayerController {
     }
 
     @CircuitBreaker(name="gamesCB", fallbackMethod ="fallbackCreateGameBy")
-    @PostMapping("/game/{playerId}")
+    @PostMapping("/{playerId}/game")
     public ResponseEntity<?> createGameBy(@PathVariable int playerId) {
         try {
             return ResponseEntity.ok(playerService.createGameBy(playerId));
@@ -100,7 +100,7 @@ public class PlayerController {
     }
 
     @CircuitBreaker(name="gamesCB", fallbackMethod ="fallbackDeleteGamesBy")
-    @DeleteMapping("/games/{id}")
+    @DeleteMapping("/{id}/games")
     public ResponseEntity<?> deleteGamesBy(@PathVariable int id) {
         playerService.deleteGamesBy(id);
         return new ResponseEntity<>(HttpStatus.ACCEPTED);

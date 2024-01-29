@@ -74,7 +74,7 @@ public class PlayerService implements PlayerServiceInterface, GameClientServiceI
        if (!playerRepository.existsById(playerId)) {
            throw new PlayerNotFoundException();
        } else {
-           return restTemplate.postForObject("http://game-service/games/player/" + playerId, new GameDTO(), GameDTO.class);
+           return restTemplate.postForObject("http://game-service/games/"+ playerId +"/player", new GameDTO(), GameDTO.class);
        }
     }
 
@@ -87,7 +87,7 @@ public class PlayerService implements PlayerServiceInterface, GameClientServiceI
 
     @Override
     public void deleteGamesBy(int playerId) {
-        restTemplate.delete("http://game-service/games/delete/" + playerId);
+        restTemplate.delete("http://game-service/games/"+ playerId +"/delete");
     }
 
     @Override

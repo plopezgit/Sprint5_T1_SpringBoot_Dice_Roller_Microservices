@@ -46,7 +46,7 @@ public class PlayerService implements PlayerServiceInterface, GameClientServiceI
     @Override
     public void createPlayer(PlayerDTO playerDTO) throws NickNameAlreadyExistException {
         PlayerDTO newPlayer = setNicknameTo(playerDTO);
-        if (exist(newPlayer) && !isAnonymous(newPlayer))
+        if (existNickname(newPlayer) && !isAnonymous(newPlayer))
             throw new NickNameAlreadyExistException("The nickname already exist, please try another one.");
         playerRepository.save(getPlayerEntityFromDTO(newPlayer));
     }
@@ -71,7 +71,11 @@ public class PlayerService implements PlayerServiceInterface, GameClientServiceI
 
     @Override
     public GameDTO createGameBy(int playerId) throws PlayerNotFoundException {
-        return restTemplate.postForObject("http://game-service/games/player/" + playerId, new GameDTO(), GameDTO.class);
+       if (!playerRepository.existsById(playerId)) {
+           throw new PlayerNotFoundException();
+       } else {
+           return restTemplate.postForObject("http://game-service/games/player/" + playerId, new GameDTO(), GameDTO.class);
+       }
     }
 
     @Override
@@ -115,7 +119,7 @@ public class PlayerService implements PlayerServiceInterface, GameClientServiceI
         return playerToCheck.getNickname().isEmpty() || playerToCheck.getNickname().isBlank();
     }
 
-    private boolean exist(PlayerDTO playerToCheck) {
+    private boolean existNickname(PlayerDTO playerToCheck) {
         return playerRepository.existsByNickname(playerToCheck.getNickname());
     }
 
@@ -128,4 +132,5 @@ public class PlayerService implements PlayerServiceInterface, GameClientServiceI
                 PlayerDTO.builder().nickname("Anonymous").build() :
                 PlayerDTO.builder().nickname(playerToSet.getNickname()).build();
     }
+
 }

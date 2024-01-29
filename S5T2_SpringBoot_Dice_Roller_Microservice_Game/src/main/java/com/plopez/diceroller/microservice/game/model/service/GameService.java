@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
+import java.util.Random;
 import java.util.stream.Collectors;
 
 @Transactional
@@ -31,8 +32,7 @@ public class GameService implements GameServiceInterface, PlayerClientServiceInt
 
     @Override
     public List<GameDTO> getGames() {
-        List<Game> players = gameRepository.findAll();
-        return players.stream().map(this::getGameDTOFromEntity).collect(Collectors.toList());
+        return gameRepository.findAll().stream().map(this::getGameDTOFromEntity).collect(Collectors.toList());
     }
 
     @Override
@@ -43,7 +43,7 @@ public class GameService implements GameServiceInterface, PlayerClientServiceInt
 
     @Override
     public void createGameBy(int playerId) {
-        gameRepository.save(getGameEntityFromDTO(new GameDTO(playerId)));
+        gameRepository.save(getGameEntityFromDTO(getTheDiceRolledBy(playerId)));
     }
 
     @Override
@@ -53,17 +53,12 @@ public class GameService implements GameServiceInterface, PlayerClientServiceInt
 
     @Override
     public void updatePlayerSuccessRate(int playerId) {
-        List<GameDTO> games = findGamesByPlayerId(playerId);
-        float rate = (float) games.stream()
-                .mapToInt(GameDTO::getResult)
-                .sum() / games.size();
-        restTemplate.postForObject("http://player-service/players/update/rate/" + playerId, rate, PlayerDTO.class);
+        restTemplate.postForObject("http://player-service/players/update/rate/" + playerId, calculateGamesSuccessRateBy(playerId), PlayerDTO.class);
     }
 
     @Override
     public List<GameDTO> findGamesByPlayerId(int playerId) {
-        List<Game> games = gameRepository.findGamesByPlayerId(playerId);
-        return games.stream().map(this::getGameDTOFromEntity).collect(Collectors.toList());
+        return gameRepository.findGamesByPlayerId(playerId).stream().map(this::getGameDTOFromEntity).collect(Collectors.toList());
     }
 
     private GameDTO getGameDTOFromEntity(Game game) {
@@ -74,5 +69,20 @@ public class GameService implements GameServiceInterface, PlayerClientServiceInt
         return gameModelMapper.map(gameDTO, Game.class);
     }
 
+    private float calculateGamesSuccessRateBy(int playerId) {
+        return (float) findGamesByPlayerId(playerId).stream().mapToInt(GameDTO::getResult).average().orElse(0);
+    }
+
+    private GameDTO getTheDiceRolledBy(int playerID) {
+        int die1 = rollDie();
+        int die2 = rollDie();
+        return GameDTO.builder().playerId(playerID).die1(die1).die2(die2).result(setResult(die1, die2)).build();
+    }
+
+    private int rollDie() {
+        return new Random().nextInt(6)+1;
+    }
+
+    private int setResult (int die1, int die2) { return (die1 + die2) != 7 ? 0 : 1; }
 
 }

@@ -12,7 +12,7 @@ eureka:
     paths:
       - uri: "/players"
         method: "POST"
-      - uri: "/players/game/{1}[1-9]+[0-9]*"
+      - uri: "/players/{1}[1-9]+[0-9]*/game"
         method: "POST"
       - uri: "/players/update/{1}[1-9]+[0-9]*"
         method: "PUT"
@@ -20,7 +20,7 @@ eureka:
         method: "POST"
       - uri: "/players/update/rate/{1}[1-9]+[0-9]*"
         method: "POST"
-      - uri: "/players/games/{1}[1-9]+[0-9]*"
+      - uri: "/players/{1}[1-9]+[0-9]*/games"
         method: "DELETE"
 
 spring:

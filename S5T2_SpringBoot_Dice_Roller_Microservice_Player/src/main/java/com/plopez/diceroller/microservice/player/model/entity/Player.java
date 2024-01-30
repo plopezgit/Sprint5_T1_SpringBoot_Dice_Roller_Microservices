@@ -25,7 +25,6 @@ public class Player {
 
     public Player(String nickname) {
         this.nickname = nickname;
-        this.gameSuccessRate = 0;
     }
 
 }

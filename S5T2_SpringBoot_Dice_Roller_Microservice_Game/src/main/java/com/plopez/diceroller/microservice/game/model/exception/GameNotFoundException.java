@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class GameNotFoundException extends Exception {
+public class GameNotFoundException extends RuntimeException {
 
     private String message;
 }

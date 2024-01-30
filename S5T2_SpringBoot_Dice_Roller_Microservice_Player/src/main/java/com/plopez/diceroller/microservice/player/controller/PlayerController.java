@@ -2,8 +2,6 @@ package com.plopez.diceroller.microservice.player.controller;
 
 import com.plopez.diceroller.microservice.player.model.dto.GameDTO;
 import com.plopez.diceroller.microservice.player.model.dto.PlayerDTO;
-import com.plopez.diceroller.microservice.player.model.exception.NickNameAlreadyExistException;
-import com.plopez.diceroller.microservice.player.model.exception.PlayerNotFoundException;
 import com.plopez.diceroller.microservice.player.model.service.PlayerService;
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,39 +31,25 @@ public class PlayerController {
 
     @GetMapping("/{id}")
     public ResponseEntity<?> getPlayer(@PathVariable int id) {
-        try {
-            return ResponseEntity.ok(playerService.getPlayerBy(id));
-        } catch (PlayerNotFoundException e) {
-            throw new RuntimeException(e);
-        }
+        return ResponseEntity.ok(playerService.getPlayerBy(id));
     }
 
     @PostMapping
     public ResponseEntity<?> createPlayer(@RequestBody PlayerDTO playerDTO) {
-        try {
-            playerService.createPlayer(playerDTO);
-            return new ResponseEntity<>(HttpStatus.CREATED);
-        } catch (NickNameAlreadyExistException e) {
-            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
-        }
+        playerService.createPlayer(playerDTO);
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @PostMapping("update/{id}")
     public ResponseEntity<?> updatePlayerNickname(@PathVariable int id, @RequestBody PlayerDTO playerDTO) {
-        try {
-            playerService.updatePlayerNickname(id, playerDTO);
-            return new ResponseEntity<>(HttpStatus.ACCEPTED);
-        } catch (PlayerNotFoundException e) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);        }
+        playerService.updatePlayerNickname(id, playerDTO);
+        return new ResponseEntity<>(HttpStatus.ACCEPTED);
     }
 
     @PostMapping("update/rate/{id}")
     public ResponseEntity<?> updatePlayerSuccessRate(@PathVariable int id, @RequestBody float rate) {
-        try {
-            playerService.updatePlayerSuccessRate(id, rate);
-            return new ResponseEntity<>(HttpStatus.ACCEPTED);
-        } catch (PlayerNotFoundException e) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);        }
+        playerService.updatePlayerSuccessRate(id, rate);
+        return new ResponseEntity<>(HttpStatus.ACCEPTED);
     }
 
     @GetMapping("/ranking")
@@ -92,11 +76,7 @@ public class PlayerController {
     @CircuitBreaker(name="gamesCB", fallbackMethod ="fallbackCreateGameBy")
     @PostMapping("/{playerId}/game")
     public ResponseEntity<?> createGameBy(@PathVariable int playerId) {
-        try {
-            return ResponseEntity.ok(playerService.createGameBy(playerId));
-        } catch (PlayerNotFoundException e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+        return ResponseEntity.ok(playerService.createGameBy(playerId));
     }
 
     @CircuitBreaker(name="gamesCB", fallbackMethod ="fallbackDeleteGamesBy")

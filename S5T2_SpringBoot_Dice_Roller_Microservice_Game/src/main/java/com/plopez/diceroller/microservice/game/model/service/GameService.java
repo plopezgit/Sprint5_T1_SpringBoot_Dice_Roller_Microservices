@@ -36,7 +36,7 @@ public class GameService implements GameServiceInterface, PlayerClientServiceInt
     }
 
     @Override
-    public GameDTO getGameBy(int id) throws GameNotFoundException {
+    public GameDTO getGameBy(int id) {
         return gameRepository.findById(id).map(this::getGameDTOFromEntity)
                 .orElseThrow(() -> new GameNotFoundException("The game does not exist"));
     }

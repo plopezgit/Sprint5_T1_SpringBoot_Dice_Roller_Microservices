@@ -11,14 +11,15 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/auth")
+@SuppressWarnings("unused")
 public class AuthUserController {
 
     @Autowired
     AuthUserService authUserService;
 
     @PostMapping("/login")
-    public ResponseEntity<TokenDTO> login(@RequestBody AuthUserDTO dto){
-        TokenDTO tokenDto = authUserService.login(dto);
+    public ResponseEntity<TokenDTO> login(@RequestBody AuthUserDTO authUserDTO){
+        TokenDTO tokenDto = authUserService.login(authUserDTO);
         if(tokenDto == null)
             return ResponseEntity.badRequest().build();
         return ResponseEntity.ok(tokenDto);
@@ -33,8 +34,8 @@ public class AuthUserController {
     }
 
     @PostMapping("/create")
-    public ResponseEntity<AuthUser> create(@RequestBody AuthUserDTO dto){
-        AuthUser authUser = authUserService.save(dto);
+    public ResponseEntity<AuthUser> create(@RequestBody AuthUserDTO authUserDTO){
+        AuthUser authUser = authUserService.save(authUserDTO);
         if(authUser == null)
             return ResponseEntity.badRequest().build();
         return ResponseEntity.ok(authUser);

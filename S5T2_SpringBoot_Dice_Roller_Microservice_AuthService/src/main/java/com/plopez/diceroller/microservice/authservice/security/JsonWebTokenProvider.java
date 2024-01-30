@@ -11,7 +11,6 @@ import org.springframework.stereotype.Component;
 
 import java.util.Base64;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.Map;
 
 @Component
@@ -29,7 +28,7 @@ public class JsonWebTokenProvider {
     }
 
     public String createToken(AuthUser authUser) {
-        Map<String, Object> claims = new HashMap<>();
+        Map<String, Object> claims;
         claims = Jwts.claims().setSubject(authUser.getUserName());
         claims.put("role", authUser.getRole());
         Date now = new Date();

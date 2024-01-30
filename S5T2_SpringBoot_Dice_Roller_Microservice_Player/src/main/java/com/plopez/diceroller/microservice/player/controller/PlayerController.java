@@ -34,11 +34,6 @@ public class PlayerController {
         }
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<PlayerDTO> getPlayer(@PathVariable int id) {
-        return ResponseEntity.ok(playerService.getPlayerBy(id));
-    }
-
     @PostMapping
     public ResponseEntity<ResponseMessage> createPlayer(@RequestBody PlayerDTO playerDTO, WebRequest request) {
         playerService.createPlayer(playerDTO);
@@ -82,15 +77,6 @@ public class PlayerController {
     @GetMapping("/ranking/winner")
     public ResponseEntity<Optional<PlayerDTO>>  getPlayerMostWinner() {
         return ResponseEntity.ok(playerService.getPlayerMostWinner());
-    }
-
-    @DeleteMapping("/delete/{id}")
-    public ResponseEntity<ResponseMessage> deletePlayer(@PathVariable int id) {
-        playerService.deletePlayerBy(id);
-        return new ResponseEntity<>(ResponseMessage.builder()
-                .responseCode(HttpStatus.ACCEPTED.value())
-                .message("The player has been deleted.")
-                .build(), HttpStatus.ACCEPTED);
     }
 
     @CircuitBreaker(name="gamesCB", fallbackMethod ="fallbackCreateGameBy")

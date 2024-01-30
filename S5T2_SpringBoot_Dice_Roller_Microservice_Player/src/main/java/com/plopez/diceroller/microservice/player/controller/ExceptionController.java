@@ -39,7 +39,7 @@ public class ExceptionController {
 
     @ExceptionHandler(HttpMediaTypeNotSupportedException.class)
     @ResponseStatus(value = HttpStatus.BAD_REQUEST)
-    public ResponseEntity<ResponseMessage> HttpMediaTypeNotSupportedExceptionHandler(HttpMediaTypeNotSupportedException exception, WebRequest request) {
+    public ResponseEntity<ResponseMessage> httpMediaTypeNotSupportedExceptionHandler(HttpMediaTypeNotSupportedException exception, WebRequest request) {
         return new ResponseEntity<>(ResponseMessage.builder()
                 .responseCode(HttpStatus.BAD_REQUEST.value())
                 .message(exception.getMessage())

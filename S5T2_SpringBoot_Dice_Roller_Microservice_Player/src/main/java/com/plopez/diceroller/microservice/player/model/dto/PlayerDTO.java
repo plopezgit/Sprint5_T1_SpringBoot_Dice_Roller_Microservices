@@ -20,7 +20,6 @@ public class PlayerDTO {
 
     public PlayerDTO(String nickname) {
         this.nickname = nickname;
-        this.gameSuccessRate = 0;
     }
 
 }

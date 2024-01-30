@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class NickNameAlreadyExistException extends Exception {
+public class NickNameAlreadyExistException extends RuntimeException {
 
     private String message;
 }

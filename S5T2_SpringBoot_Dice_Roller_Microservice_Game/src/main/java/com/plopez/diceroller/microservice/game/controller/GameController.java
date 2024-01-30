@@ -30,11 +30,7 @@ public class GameController {
 
     @GetMapping("/{id}")
     public ResponseEntity<?> getGame(@PathVariable int id) {
-        try {
-            return ResponseEntity.ok(gameService.getGameBy(id));
-        } catch (GameNotFoundException e) {
-            throw new RuntimeException(e);
-        }
+        return ResponseEntity.ok(gameService.getGameBy(id));
     }
 
     @DeleteMapping("{id}/delete")

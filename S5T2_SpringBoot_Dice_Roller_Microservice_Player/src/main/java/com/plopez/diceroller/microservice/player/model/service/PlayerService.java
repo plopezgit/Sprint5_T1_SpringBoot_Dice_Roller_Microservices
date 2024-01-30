@@ -38,13 +38,13 @@ public class PlayerService implements PlayerServiceInterface, GameClientServiceI
     }
 
     @Override
-    public PlayerDTO getPlayerBy(int id) throws PlayerNotFoundException {
+    public PlayerDTO getPlayerBy(int id) {
         return playerRepository.findById(id).map(this::getPlayerDTOFromEntity)
-                .orElseThrow(() -> new PlayerNotFoundException("The game does not exist"));
+                .orElseThrow(() -> new PlayerNotFoundException("The player does not exist"));
     }
 
     @Override
-    public void createPlayer(PlayerDTO playerDTO) throws NickNameAlreadyExistException {
+    public void createPlayer(PlayerDTO playerDTO) {
         PlayerDTO newPlayer = setNicknameTo(playerDTO);
         if (existNickname(newPlayer) && !isAnonymous(newPlayer))
             throw new NickNameAlreadyExistException("The nickname already exist, please try another one.");
@@ -52,7 +52,7 @@ public class PlayerService implements PlayerServiceInterface, GameClientServiceI
     }
 
     @Override
-    public void updatePlayerNickname(int id, PlayerDTO playerDTO) throws PlayerNotFoundException {
+    public void updatePlayerNickname(int id, PlayerDTO playerDTO) {
         PlayerDTO player = getPlayerBy(id);
         player.setNickname(playerDTO.getNickname());
         playerRepository.save(getPlayerEntityFromDTO(player));
@@ -70,7 +70,7 @@ public class PlayerService implements PlayerServiceInterface, GameClientServiceI
     }
 
     @Override
-    public GameDTO createGameBy(int playerId) throws PlayerNotFoundException {
+    public GameDTO createGameBy(int playerId) {
        if (!playerRepository.existsById(playerId)) {
            throw new PlayerNotFoundException();
        } else {
@@ -79,7 +79,7 @@ public class PlayerService implements PlayerServiceInterface, GameClientServiceI
     }
 
     @Override
-    public void updatePlayerSuccessRate(int playerId, float rate) throws PlayerNotFoundException {
+    public void updatePlayerSuccessRate(int playerId, float rate) {
         PlayerDTO player = getPlayerBy(playerId);
         player.setGameSuccessRate(rate);
         playerRepository.save(getPlayerEntityFromDTO(player));

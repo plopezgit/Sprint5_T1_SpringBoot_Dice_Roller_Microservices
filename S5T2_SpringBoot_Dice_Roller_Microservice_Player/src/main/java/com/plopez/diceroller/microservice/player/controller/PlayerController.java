@@ -8,8 +8,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.context.request.WebRequest;
 
+import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/players")
@@ -23,85 +26,113 @@ public class PlayerController {
     public ResponseEntity<?> getPlayers() {
         List<PlayerDTO> playersDTO = playerService.getPlayers();
         if (playersDTO.isEmpty()) {
-            return ResponseEntity.noContent().build();
+            return new ResponseEntity<>(ResponseMessage.builder()
+                    .responseCode(HttpStatus.NO_CONTENT.value())
+                    .message("The players database is empty.").responseTimeStamp(new Date()).build(), HttpStatus.NO_CONTENT);
         } else {
-            return ResponseEntity.ok(playersDTO);
+            return new ResponseEntity<>(playersDTO, HttpStatus.OK);
         }
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> getPlayer(@PathVariable int id) {
+    public ResponseEntity<PlayerDTO> getPlayer(@PathVariable int id) {
         return ResponseEntity.ok(playerService.getPlayerBy(id));
     }
 
     @PostMapping
-    public ResponseEntity<?> createPlayer(@RequestBody PlayerDTO playerDTO) {
+    public ResponseEntity<ResponseMessage> createPlayer(@RequestBody PlayerDTO playerDTO, WebRequest request) {
         playerService.createPlayer(playerDTO);
-        return new ResponseEntity<>(HttpStatus.CREATED);
+        return new ResponseEntity<>(ResponseMessage.builder()
+                .responseCode(HttpStatus.CREATED.value())
+                .message("The player has been created: " + playerDTO)
+                .messageDescription(request.getDescription(false))
+                .responseTimeStamp(new Date())
+                .build(), HttpStatus.CREATED);
     }
 
     @PostMapping("update/{id}")
-    public ResponseEntity<?> updatePlayerNickname(@PathVariable int id, @RequestBody PlayerDTO playerDTO) {
+    public ResponseEntity<ResponseMessage> updatePlayerNickname(@PathVariable int id, @RequestBody PlayerDTO playerDTO, WebRequest request) {
         playerService.updatePlayerNickname(id, playerDTO);
-        return new ResponseEntity<>(HttpStatus.ACCEPTED);
+        return new ResponseEntity<>(ResponseMessage.builder()
+                .responseCode(HttpStatus.ACCEPTED.value())
+                .message("The player nickname has been updated.")
+                .messageDescription(request.getDescription(false))
+                .responseTimeStamp(new Date())
+                .build(), HttpStatus.ACCEPTED);
     }
 
     @PostMapping("update/rate/{id}")
-    public ResponseEntity<?> updatePlayerSuccessRate(@PathVariable int id, @RequestBody float rate) {
+    public ResponseEntity<ResponseMessage> updatePlayerSuccessRate(@PathVariable int id, @RequestBody float rate) {
         playerService.updatePlayerSuccessRate(id, rate);
-        return new ResponseEntity<>(HttpStatus.ACCEPTED);
+        return new ResponseEntity<>(ResponseMessage.builder()
+                .responseCode(HttpStatus.ACCEPTED.value())
+                .build(), HttpStatus.ACCEPTED);
     }
 
     @GetMapping("/ranking")
-    public ResponseEntity<?> getTotalPlayersWinningAverage() {
+    public ResponseEntity<Float> getTotalPlayersWinningAverage() {
         return ResponseEntity.ok(playerService.getTotalPlayersWinningAverage());
     }
 
     @GetMapping("/ranking/loser")
-    public ResponseEntity<?> getPlayerMostLoser() {
+    public ResponseEntity<Optional<PlayerDTO>> getPlayerMostLoser() {
         return ResponseEntity.ok(playerService.getPlayerMostLoser());
     }
 
     @GetMapping("/ranking/winner")
-    public ResponseEntity<?> getPlayerMostWinner() {
+    public ResponseEntity<Optional<PlayerDTO>>  getPlayerMostWinner() {
         return ResponseEntity.ok(playerService.getPlayerMostWinner());
     }
 
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<?> deletePlayer(@PathVariable int id) {
+    public ResponseEntity<ResponseMessage> deletePlayer(@PathVariable int id) {
         playerService.deletePlayerBy(id);
-        return new ResponseEntity<>(HttpStatus.ACCEPTED);
+        return new ResponseEntity<>(ResponseMessage.builder()
+                .responseCode(HttpStatus.ACCEPTED.value())
+                .message("The player has been deleted.")
+                .build(), HttpStatus.ACCEPTED);
     }
 
     @CircuitBreaker(name="gamesCB", fallbackMethod ="fallbackCreateGameBy")
     @PostMapping("/{playerId}/game")
-    public ResponseEntity<?> createGameBy(@PathVariable int playerId) {
-        return ResponseEntity.ok(playerService.createGameBy(playerId));
+    public ResponseEntity<ResponseMessage> createGameBy(@PathVariable int playerId, WebRequest request) {
+        return new ResponseEntity<>(ResponseMessage.builder()
+                .responseCode(HttpStatus.CREATED.value())
+                .message("The game has been created.")
+                .messageDescription(request.getDescription(false))
+                .responseTimeStamp(new Date())
+                .build(), HttpStatus.CREATED);
     }
 
     @CircuitBreaker(name="gamesCB", fallbackMethod ="fallbackDeleteGamesBy")
     @DeleteMapping("/{id}/games")
-    public ResponseEntity<?> deleteGamesBy(@PathVariable int id) {
+    public ResponseEntity<?> deleteGamesBy(@PathVariable int id, WebRequest request) {
         playerService.deleteGamesBy(id);
-        return new ResponseEntity<>(HttpStatus.ACCEPTED);
+        return new ResponseEntity<>(ResponseMessage.builder()
+                .responseCode(HttpStatus.ACCEPTED.value())
+                .message("The player games has been deleted.")
+                .messageDescription(request.getDescription(false))
+                .responseTimeStamp(new Date())
+                .build(), HttpStatus.ACCEPTED);
     }
 
     @CircuitBreaker(name="gamesCB", fallbackMethod ="fallbackGetGamesByPlayer")
     @GetMapping("/{playerId}/games")
-    public ResponseEntity<?> getGamesByPlayer(@PathVariable int playerId) {
+    public ResponseEntity<List<GameDTO>> getGamesByPlayer(@PathVariable int playerId) {
         List<GameDTO> games = playerService.getGamesBy(playerId);
         return ResponseEntity.ok(games);
     }
 
-    public ResponseEntity<?> fallbackCreateGameBy(@PathVariable("playerId") int playerId, RuntimeException e) {
-        return new ResponseEntity<>("The player: " + playerId + " can not play now. Try later", HttpStatus.OK);
+    public ResponseEntity<ResponseMessage> fallbackCreateGameBy(@PathVariable("playerId") int playerId, RuntimeException e) {
+        return new ResponseEntity<>(ResponseMessage.builder().responseCode(HttpStatus.OK.value())
+                .message(e.getMessage()).message("There is a problem with the Game service. Try again").build(), HttpStatus.OK);
     }
 
     private ResponseEntity<?> fallbackGetGamesByPlayer(@PathVariable int playerId, RuntimeException e) {
-        return new ResponseEntity<>("The player: " + playerId + " does not have games yet,does not have games yet, or game delete service is not available now.", HttpStatus.OK);
-    }
+        return new ResponseEntity<>(ResponseMessage.builder().responseCode(HttpStatus.OK.value())
+                .message(e.getMessage()).message("There is a problem with the Game service. Try again").build(), HttpStatus.OK);    }
 
     private ResponseEntity<?> fallbackDeleteGamesBy(@PathVariable int playerId, RuntimeException e) {
-        return new ResponseEntity<>("The player: " + playerId + " does not have games yet, or game delete service is not available now.", HttpStatus.OK);
-    }
+        return new ResponseEntity<>(ResponseMessage.builder().responseCode(HttpStatus.OK.value())
+                .message(e.getMessage()).message("There is a problem with the Game service. Try again").build(), HttpStatus.OK);    }
 }

@@ -59,11 +59,6 @@ public class PlayerService implements PlayerServiceInterface, GameClientServiceI
     }
 
     @Override
-    public void deletePlayerBy(int id) {
-        playerRepository.deleteById(id);
-    }
-
-    @Override
     @SuppressWarnings("unchecked")
     public List<GameDTO> getGamesBy(int playerId) {
         return restTemplate.getForObject("http://game-service/games/player/" + playerId, List.class);

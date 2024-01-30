@@ -18,6 +18,38 @@ public class GameController {
     @Autowired
     private GameService gameService;
 
+    @PostMapping("/{playerId}/player")
+    public ResponseEntity<?> createGameBy(@PathVariable int playerId) {
+        gameService.createGameBy(playerId);
+        gameService.updatePlayerSuccessRate(playerId);
+        return new ResponseEntity<>(ResponseMessage.builder()
+                .responseCode(HttpStatus.CREATED.value())
+                .message("The game has been created.")
+                .responseTimeStamp(new Date())
+                .build(), HttpStatus.CREATED);
+    }
+
+    @GetMapping("/player/{playerId}")
+    public ResponseEntity<?> getGamesBy(@PathVariable int playerId) {
+        List<GameDTO> gamesDTO = gameService.findGamesByPlayerId(playerId);
+        if (gamesDTO.isEmpty()) {
+            return new ResponseEntity<>(ResponseMessage.builder()
+                    .responseCode(HttpStatus.NO_CONTENT.value())
+                    .message("The games database is empty.").responseTimeStamp(new Date()).build(), HttpStatus.NO_CONTENT);
+        } else {
+            return ResponseEntity.ok(gamesDTO);
+        }
+    }
+
+    @DeleteMapping("{id}/delete")
+    public ResponseEntity<ResponseMessage> deleteGamesBy(@PathVariable int playerId) {
+        gameService.deleteGamesBy(playerId);
+        return new ResponseEntity<>(ResponseMessage.builder()
+                .responseCode(HttpStatus.ACCEPTED.value())
+                .message("The player games has been deleted.")
+                .build(), HttpStatus.ACCEPTED);
+    }
+
     @GetMapping
     public ResponseEntity<?> getGames() {
         List<GameDTO> gamesDTO = gameService.getGames();
@@ -35,35 +67,7 @@ public class GameController {
         return ResponseEntity.ok(gameService.getGameBy(id));
     }
 
-    @DeleteMapping("{id}/delete")
-    public ResponseEntity<ResponseMessage> deleteGames(@PathVariable int id) {
-        gameService.deleteGamesBy(id);
-        return new ResponseEntity<>(ResponseMessage.builder()
-                .responseCode(HttpStatus.ACCEPTED.value())
-                .message("The player has been deleted.")
-                .build(), HttpStatus.ACCEPTED);
-    }
 
-    @GetMapping("/player/{playerId}")
-    public ResponseEntity<?> getGamesByPlayerId(@PathVariable int playerId) {
-        List<GameDTO> gamesDTO = gameService.findGamesByPlayerId(playerId);
-        if (gamesDTO.isEmpty()) {
-            return new ResponseEntity<>(ResponseMessage.builder()
-                    .responseCode(HttpStatus.NO_CONTENT.value())
-                    .message("The games database is empty.").responseTimeStamp(new Date()).build(), HttpStatus.NO_CONTENT);
-        } else {
-            return ResponseEntity.ok(gamesDTO);
-        }
-    }
 
-    @PostMapping("/{playerId}/player")
-    public ResponseEntity<?> createGameBy(@PathVariable int playerId) {
-        gameService.createGameBy(playerId);
-        gameService.updatePlayerSuccessRate(playerId);
-        return new ResponseEntity<>(ResponseMessage.builder()
-                .responseCode(HttpStatus.CREATED.value())
-                .message("The game has been created.")
-                .responseTimeStamp(new Date())
-                .build(), HttpStatus.CREATED);
-    }
+
 }

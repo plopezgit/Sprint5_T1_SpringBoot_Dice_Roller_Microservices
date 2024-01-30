@@ -48,5 +48,4 @@ public class ExceptionController {
                 .responseTimeStamp(new Date())
                 .build(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
-
 }

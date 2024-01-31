@@ -82,6 +82,7 @@ public class PlayerController {
     @CircuitBreaker(name="gamesCB", fallbackMethod ="fallbackCreateGameBy")
     @PostMapping("/{playerId}/game")
     public ResponseEntity<ResponseMessage> createGameBy(@PathVariable int playerId, WebRequest request) {
+        playerService.createGameBy(playerId);
         return new ResponseEntity<>(ResponseMessage.builder()
                 .responseCode(HttpStatus.CREATED.value())
                 .message("The game has been created.")
@@ -111,14 +112,14 @@ public class PlayerController {
 
     public ResponseEntity<ResponseMessage> fallbackCreateGameBy(@PathVariable("playerId") int playerId, RuntimeException e) {
         return new ResponseEntity<>(ResponseMessage.builder().responseCode(HttpStatus.OK.value())
-                .message(e.getMessage()).message("There is a problem with the Game service. Try again").build(), HttpStatus.OK);
+                .message("There is a problem with the Game service. Try again").build(), HttpStatus.OK);
     }
 
     private ResponseEntity<?> fallbackGetGamesByPlayer(@PathVariable int playerId, RuntimeException e) {
         return new ResponseEntity<>(ResponseMessage.builder().responseCode(HttpStatus.OK.value())
-                .message(e.getMessage()).message("There is a problem with the Game service. Try again").build(), HttpStatus.OK);    }
+                .message("There is a problem with the Game service. Try again").build(), HttpStatus.OK);    }
 
     private ResponseEntity<?> fallbackDeleteGamesBy(@PathVariable int playerId, RuntimeException e) {
         return new ResponseEntity<>(ResponseMessage.builder().responseCode(HttpStatus.OK.value())
-                .message(e.getMessage()).message("There is a problem with the Game service. Try again").build(), HttpStatus.OK);    }
+                .message("There is a problem with the Game service. Try again").build(), HttpStatus.OK);    }
 }

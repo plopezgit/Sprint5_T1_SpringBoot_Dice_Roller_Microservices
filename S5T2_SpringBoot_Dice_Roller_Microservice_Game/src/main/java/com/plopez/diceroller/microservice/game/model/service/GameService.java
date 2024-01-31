@@ -42,8 +42,9 @@ public class GameService implements GameServiceInterface, PlayerClientServiceInt
     }
 
     @Override
-    public void createGameBy(int playerId) {
-        gameRepository.save(getGameEntityFromDTO(getTheDiceRolledBy(playerId)));
+    public GameDTO createGameBy(int playerId) {
+        GameDTO newGame = getTheDiceRolledBy(playerId);
+        return getGameDTOFromEntity(gameRepository.save(getGameEntityFromDTO(newGame)));
     }
 
     @Override

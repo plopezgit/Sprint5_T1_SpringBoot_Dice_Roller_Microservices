@@ -19,7 +19,7 @@ public class AuthUserController {
     AuthUserService authUserService;
 
     @PostMapping("/login")
-    public ResponseEntity<TokenDTO> login(@RequestBody @Valid AuthUserDTO authUserDTO){
+    public ResponseEntity<TokenDTO> login(@Valid @RequestBody AuthUserDTO authUserDTO){
         TokenDTO tokenDto = authUserService.login(authUserDTO);
         if(tokenDto == null)
             return ResponseEntity.badRequest().build();
@@ -35,7 +35,7 @@ public class AuthUserController {
     }
 
     @PostMapping("/create")
-    public ResponseEntity<AuthUser> create(@RequestBody @Valid AuthUserDTO authUserDTO){
+    public ResponseEntity<AuthUser> create(@Valid @RequestBody AuthUserDTO authUserDTO){
         AuthUser authUser = authUserService.save(authUserDTO);
         if(authUser == null)
             return ResponseEntity.badRequest().build();

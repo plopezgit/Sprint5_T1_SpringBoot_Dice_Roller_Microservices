@@ -4,6 +4,7 @@ import com.plopez.diceroller.microservice.player.model.exception.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.HttpMediaTypeNotSupportedException;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -41,6 +42,17 @@ public class ExceptionController {
     @ExceptionHandler(HttpMediaTypeNotSupportedException.class)
     @ResponseStatus(value = HttpStatus.BAD_REQUEST)
     public ResponseEntity<ResponseMessage> httpMediaTypeNotSupportedExceptionHandler(HttpMediaTypeNotSupportedException exception, WebRequest request) {
+        return new ResponseEntity<>(ResponseMessage.builder()
+                .responseCode(HttpStatus.BAD_REQUEST.value())
+                .message(exception.getMessage())
+                .messageDescription(request.getDescription(false))
+                .responseTimeStamp(new Date())
+                .build(), HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    @ResponseStatus(value = HttpStatus.BAD_REQUEST)
+    public ResponseEntity<ResponseMessage> methodArgumentNotValidExceptionHandler(MethodArgumentNotValidException exception, WebRequest request) {
         return new ResponseEntity<>(ResponseMessage.builder()
                 .responseCode(HttpStatus.BAD_REQUEST.value())
                 .message(exception.getMessage())

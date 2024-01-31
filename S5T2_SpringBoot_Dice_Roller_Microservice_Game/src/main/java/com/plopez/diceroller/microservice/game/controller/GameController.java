@@ -19,14 +19,10 @@ public class GameController {
     private GameService gameService;
 
     @PostMapping("/{playerId}/player")
-    public ResponseEntity<?> createGameBy(@PathVariable int playerId) {
-        gameService.createGameBy(playerId);
+    public ResponseEntity<GameDTO> createGameBy(@PathVariable int playerId) {
+        GameDTO gameDTO = gameService.createGameBy(playerId);
         gameService.updatePlayerSuccessRate(playerId);
-        return new ResponseEntity<>(ResponseMessage.builder()
-                .responseCode(HttpStatus.CREATED.value())
-                .message("The game has been created.")
-                .responseTimeStamp(new Date())
-                .build(), HttpStatus.CREATED);
+        return ResponseEntity.ok(gameDTO);
     }
 
     @GetMapping("/player/{playerId}")

@@ -82,14 +82,8 @@ public class PlayerController {
 
     @CircuitBreaker(name="gamesCB", fallbackMethod ="fallbackCreateGameBy")
     @PostMapping("/{playerId}/game")
-    public ResponseEntity<ResponseMessage> createGameBy(@PathVariable int playerId, WebRequest request) {
-        playerService.createGameBy(playerId);
-        return new ResponseEntity<>(ResponseMessage.builder()
-                .responseCode(HttpStatus.CREATED.value())
-                .message("The game has been created.")
-                .messageDescription(request.getDescription(false))
-                .responseTimeStamp(new Date())
-                .build(), HttpStatus.CREATED);
+    public ResponseEntity<GameDTO> createGameBy(@PathVariable int playerId, WebRequest request) {
+        return ResponseEntity.ok(playerService.createGameBy(playerId));
     }
 
     @CircuitBreaker(name="gamesCB", fallbackMethod ="fallbackDeleteGamesBy")

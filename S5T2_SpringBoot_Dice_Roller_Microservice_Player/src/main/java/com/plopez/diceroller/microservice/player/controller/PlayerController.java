@@ -4,6 +4,7 @@ import com.plopez.diceroller.microservice.player.model.dto.GameDTO;
 import com.plopez.diceroller.microservice.player.model.dto.PlayerDTO;
 import com.plopez.diceroller.microservice.player.model.service.PlayerService;
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -35,7 +36,7 @@ public class PlayerController {
     }
 
     @PostMapping
-    public ResponseEntity<ResponseMessage> createPlayer(@RequestBody PlayerDTO playerDTO, WebRequest request) {
+    public ResponseEntity<ResponseMessage> createPlayer(@Valid @RequestBody PlayerDTO playerDTO, WebRequest request) {
         playerService.createPlayer(playerDTO);
         return new ResponseEntity<>(ResponseMessage.builder()
                 .responseCode(HttpStatus.CREATED.value())
@@ -46,7 +47,7 @@ public class PlayerController {
     }
 
     @PostMapping("update/{id}")
-    public ResponseEntity<ResponseMessage> updatePlayerNickname(@PathVariable int id, @RequestBody PlayerDTO playerDTO, WebRequest request) {
+    public ResponseEntity<ResponseMessage> updatePlayerNickname(@PathVariable int id, @Valid @RequestBody PlayerDTO playerDTO, WebRequest request) {
         playerService.updatePlayerNickname(id, playerDTO);
         return new ResponseEntity<>(ResponseMessage.builder()
                 .responseCode(HttpStatus.ACCEPTED.value())

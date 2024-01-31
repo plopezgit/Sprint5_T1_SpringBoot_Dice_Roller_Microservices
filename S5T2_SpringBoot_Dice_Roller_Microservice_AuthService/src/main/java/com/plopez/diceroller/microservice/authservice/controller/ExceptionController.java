@@ -7,6 +7,7 @@ import com.plopez.diceroller.microservice.authservice.model.exception.TokenInval
 import jakarta.validation.ConstraintViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -76,6 +77,17 @@ public class ExceptionController {
     @ExceptionHandler(ConstraintViolationException.class)
     @ResponseStatus(value = HttpStatus.BAD_REQUEST)
     public ResponseEntity<ResponseMessage> constraintViolationException(ConstraintViolationException exception, WebRequest request) {
+        return new ResponseEntity<>(ResponseMessage.builder()
+                .responseCode(HttpStatus.BAD_REQUEST.value())
+                .message(exception.getMessage())
+                .messageDescription(request.getDescription(false))
+                .responseTimeStamp(new Date())
+                .build(), HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    @ResponseStatus(value = HttpStatus.BAD_REQUEST)
+    public ResponseEntity<ResponseMessage> methodArgumentNotValidExceptionHandler(MethodArgumentNotValidException exception, WebRequest request) {
         return new ResponseEntity<>(ResponseMessage.builder()
                 .responseCode(HttpStatus.BAD_REQUEST.value())
                 .message(exception.getMessage())

@@ -13,10 +13,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Builder
 @Document(collection="authUsers")
 public class AuthUser {
-    @NotBlank(message = "Username must not be null.")
     private String userName;
-    @NotBlank (message = "Password must not be null.")
     private String password;
-    @NotBlank (message = "Role must not be null.")
     private String role;
 }

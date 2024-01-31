@@ -4,6 +4,7 @@ import com.plopez.diceroller.microservice.authservice.model.exception.AuthUserAl
 import com.plopez.diceroller.microservice.authservice.model.exception.AuthUserInvalidException;
 import com.plopez.diceroller.microservice.authservice.model.exception.AuthUserNotFoundException;
 import com.plopez.diceroller.microservice.authservice.model.exception.TokenInvalidException;
+import jakarta.validation.ConstraintViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -59,5 +60,27 @@ public class ExceptionController {
                 .messageDescription(request.getDescription(false))
                 .responseTimeStamp(new Date())
                 .build(), HttpStatus.ALREADY_REPORTED);
+    }
+
+    @ExceptionHandler(IllegalArgumentException.class)
+    @ResponseStatus(value = HttpStatus.BAD_REQUEST)
+    public ResponseEntity<ResponseMessage> illegalArgumentExceptionHandler(IllegalArgumentException exception, WebRequest request) {
+        return new ResponseEntity<>(ResponseMessage.builder()
+                .responseCode(HttpStatus.BAD_REQUEST.value())
+                .message(exception.getMessage())
+                .messageDescription(request.getDescription(false))
+                .responseTimeStamp(new Date())
+                .build(), HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(ConstraintViolationException.class)
+    @ResponseStatus(value = HttpStatus.BAD_REQUEST)
+    public ResponseEntity<ResponseMessage> constraintViolationException(ConstraintViolationException exception, WebRequest request) {
+        return new ResponseEntity<>(ResponseMessage.builder()
+                .responseCode(HttpStatus.BAD_REQUEST.value())
+                .message(exception.getMessage())
+                .messageDescription(request.getDescription(false))
+                .responseTimeStamp(new Date())
+                .build(), HttpStatus.BAD_REQUEST);
     }
 }

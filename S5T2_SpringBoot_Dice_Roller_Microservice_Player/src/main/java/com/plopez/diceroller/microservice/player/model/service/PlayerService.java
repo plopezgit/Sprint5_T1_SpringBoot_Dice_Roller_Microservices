@@ -40,7 +40,7 @@ public class PlayerService implements PlayerServiceInterface, GameClientServiceI
     @Override
     public PlayerDTO getPlayerBy(int id) {
         return playerRepository.findById(id).map(this::getPlayerDTOFromEntity)
-                .orElseThrow(() -> new PlayerNotFoundException("The player does not exist"));
+                .orElseThrow(() -> new PlayerNotFoundException("The player does not exist."));
     }
 
     @Override
@@ -67,7 +67,7 @@ public class PlayerService implements PlayerServiceInterface, GameClientServiceI
     @Override
     public GameDTO createGameBy(int playerId) {
        if (!playerRepository.existsById(playerId)) {
-           throw new PlayerNotFoundException();
+           throw new PlayerNotFoundException("The player does not exists.");
        } else {
            return restTemplate.postForObject("http://game-service/games/"+ playerId +"/player", new GameDTO(), GameDTO.class);
        }

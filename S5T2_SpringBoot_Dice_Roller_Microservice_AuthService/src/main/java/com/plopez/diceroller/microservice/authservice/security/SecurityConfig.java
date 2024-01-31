@@ -1,6 +1,7 @@
 package com.plopez.diceroller.microservice.authservice.security;
 
 import com.plopez.diceroller.microservice.authservice.model.service.AuthUserService;
+import com.plopez.diceroller.microservice.authservice.security.AuthUserDetailsServiceImplementation;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;

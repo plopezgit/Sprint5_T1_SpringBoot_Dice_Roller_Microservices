@@ -5,6 +5,7 @@ import com.plopez.diceroller.microservice.authservice.model.dto.HttpRequestDTO;
 import com.plopez.diceroller.microservice.authservice.model.dto.TokenDTO;
 import com.plopez.diceroller.microservice.authservice.model.entity.AuthUser;
 import com.plopez.diceroller.microservice.authservice.model.service.AuthUserService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,7 +19,7 @@ public class AuthUserController {
     AuthUserService authUserService;
 
     @PostMapping("/login")
-    public ResponseEntity<TokenDTO> login(@RequestBody AuthUserDTO authUserDTO){
+    public ResponseEntity<TokenDTO> login(@RequestBody @Valid AuthUserDTO authUserDTO){
         TokenDTO tokenDto = authUserService.login(authUserDTO);
         if(tokenDto == null)
             return ResponseEntity.badRequest().build();
@@ -34,7 +35,7 @@ public class AuthUserController {
     }
 
     @PostMapping("/create")
-    public ResponseEntity<AuthUser> create(@RequestBody AuthUserDTO authUserDTO){
+    public ResponseEntity<AuthUser> create(@RequestBody @Valid AuthUserDTO authUserDTO){
         AuthUser authUser = authUserService.save(authUserDTO);
         if(authUser == null)
             return ResponseEntity.badRequest().build();

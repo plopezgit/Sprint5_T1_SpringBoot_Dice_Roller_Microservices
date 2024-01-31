@@ -27,6 +27,8 @@ public class GameController {
 
     @GetMapping("/player/{playerId}")
     public ResponseEntity<?> getGamesBy(@PathVariable int playerId) {
+        return ResponseEntity.ok(gameService.findGamesByPlayerId(playerId));
+        /*
         List<GameDTO> gamesDTO = gameService.findGamesByPlayerId(playerId);
         if (gamesDTO.isEmpty()) {
             return new ResponseEntity<>(ResponseMessage.builder()
@@ -34,10 +36,10 @@ public class GameController {
                     .message("The games database is empty.").responseTimeStamp(new Date()).build(), HttpStatus.NO_CONTENT);
         } else {
             return ResponseEntity.ok(gamesDTO);
-        }
+        }*/
     }
 
-    @DeleteMapping("{id}/delete")
+    @DeleteMapping("{playerId}/delete")
     public ResponseEntity<ResponseMessage> deleteGamesBy(@PathVariable int playerId) {
         gameService.deleteGamesBy(playerId);
         return new ResponseEntity<>(ResponseMessage.builder()

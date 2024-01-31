@@ -7,8 +7,8 @@ import java.util.List;
 @SuppressWarnings("unused")
 public interface PlayerServiceInterface {
 
-    void createPlayer(PlayerDTO playerDTO);
-    void updatePlayerNickname(int id, PlayerDTO playerDTO);
+    PlayerDTO createPlayer(PlayerDTO playerDTO);
+    PlayerDTO updatePlayerNickname(int id, PlayerDTO playerDTO);
     List<PlayerDTO> getPlayers();
     PlayerDTO getPlayerBy(int id);
 }

@@ -3,6 +3,7 @@ package com.plopez.diceroller.microservice.game.model.service;
 import com.plopez.diceroller.microservice.game.model.dto.GameDTO;
 import com.plopez.diceroller.microservice.game.model.dto.PlayerDTO;
 import com.plopez.diceroller.microservice.game.model.entity.Game;
+import com.plopez.diceroller.microservice.game.model.exception.EmptyGameListException;
 import com.plopez.diceroller.microservice.game.model.exception.GameNotFoundException;
 import com.plopez.diceroller.microservice.game.model.repository.GameRepository;
 import com.plopez.diceroller.microservice.game.model.service.interfaces.GameServiceInterface;
@@ -59,7 +60,14 @@ public class GameService implements GameServiceInterface, PlayerClientServiceInt
 
     @Override
     public List<GameDTO> findGamesByPlayerId(int playerId) {
-        return gameRepository.findGamesByPlayerId(playerId).stream().map(this::getGameDTOFromEntity).collect(Collectors.toList());
+        List<Game> games = gameRepository.findGamesByPlayerId(playerId);
+        if (games.isEmpty()) {
+            throw new EmptyGameListException("The player has not played yet.");
+        }
+        return games.stream()
+                .map(this::getGameDTOFromEntity)
+                .collect(Collectors.toList());
+        //return gameRepository.findGamesByPlayerId(playerId).stream().map(this::getGameDTOFromEntity).collect(Collectors.toList());
     }
 
     private GameDTO getGameDTOFromEntity(Game game) {

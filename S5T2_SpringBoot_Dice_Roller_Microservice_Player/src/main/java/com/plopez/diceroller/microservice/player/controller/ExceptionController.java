@@ -39,6 +39,17 @@ public class ExceptionController {
                 .build(), HttpStatus.ALREADY_REPORTED);
     }
 
+    @ExceptionHandler(EmptyGameListException.class)
+    @ResponseStatus(value = HttpStatus.NO_CONTENT)
+    public ResponseEntity<ResponseMessage> emptyGameListExceptionHandler(EmptyGameListException exception, WebRequest request) {
+        return new ResponseEntity<>(ResponseMessage.builder()
+                .responseCode(HttpStatus.NO_CONTENT.value())
+                .message(exception.getMessage())
+                .messageDescription(request.getDescription(false))
+                .responseTimeStamp(new Date())
+                .build(), HttpStatus.NO_CONTENT);
+    }
+
     @ExceptionHandler(HttpMediaTypeNotSupportedException.class)
     @ResponseStatus(value = HttpStatus.BAD_REQUEST)
     public ResponseEntity<ResponseMessage> httpMediaTypeNotSupportedExceptionHandler(HttpMediaTypeNotSupportedException exception, WebRequest request) {

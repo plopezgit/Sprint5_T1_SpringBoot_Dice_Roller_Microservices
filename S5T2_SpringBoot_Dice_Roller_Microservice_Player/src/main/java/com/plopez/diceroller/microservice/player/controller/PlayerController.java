@@ -36,25 +36,13 @@ public class PlayerController {
     }
 
     @PostMapping
-    public ResponseEntity<ResponseMessage> createPlayer(@Valid @RequestBody PlayerDTO playerDTO, WebRequest request) {
-        playerService.createPlayer(playerDTO);
-        return new ResponseEntity<>(ResponseMessage.builder()
-                .responseCode(HttpStatus.CREATED.value())
-                .message("The player has been created: " + playerDTO)
-                .messageDescription(request.getDescription(false))
-                .responseTimeStamp(new Date())
-                .build(), HttpStatus.CREATED);
+    public ResponseEntity<PlayerDTO> createPlayer(@Valid @RequestBody PlayerDTO playerDTO, WebRequest request) {
+        return ResponseEntity.ok(playerService.createPlayer(playerDTO));
     }
 
     @PostMapping("update/{id}")
-    public ResponseEntity<ResponseMessage> updatePlayerNickname(@PathVariable int id, @Valid @RequestBody PlayerDTO playerDTO, WebRequest request) {
-        playerService.updatePlayerNickname(id, playerDTO);
-        return new ResponseEntity<>(ResponseMessage.builder()
-                .responseCode(HttpStatus.ACCEPTED.value())
-                .message("The player nickname has been updated.")
-                .messageDescription(request.getDescription(false))
-                .responseTimeStamp(new Date())
-                .build(), HttpStatus.ACCEPTED);
+    public ResponseEntity<PlayerDTO> updatePlayerNickname(@PathVariable int id, @Valid @RequestBody PlayerDTO playerDTO, WebRequest request) {
+        return ResponseEntity.ok(playerService.updatePlayerNickname(id, playerDTO));
     }
 
     @PostMapping("update/rate/{id}")
@@ -87,9 +75,9 @@ public class PlayerController {
     }
 
     @CircuitBreaker(name="gamesCB", fallbackMethod ="fallbackDeleteGamesBy")
-    @DeleteMapping("/{id}/games")
-    public ResponseEntity<?> deleteGamesBy(@PathVariable int id, WebRequest request) {
-        playerService.deleteGamesBy(id);
+    @DeleteMapping("/{playerId}/games")
+    public ResponseEntity<?> deleteGamesBy(@PathVariable int playerId, WebRequest request) {
+        playerService.deleteGamesBy(playerId);
         return new ResponseEntity<>(ResponseMessage.builder()
                 .responseCode(HttpStatus.ACCEPTED.value())
                 .message("The player games has been deleted.")
@@ -112,7 +100,7 @@ public class PlayerController {
 
     private ResponseEntity<?> fallbackGetGamesByPlayer(@PathVariable int playerId, RuntimeException e) {
         return new ResponseEntity<>(ResponseMessage.builder().responseCode(HttpStatus.OK.value())
-                .message("There is a problem with the Game service. Try again").build(), HttpStatus.OK);    }
+                .message(e.getLocalizedMessage()).build(), HttpStatus.OK);    }
 
     private ResponseEntity<?> fallbackDeleteGamesBy(@PathVariable int playerId, RuntimeException e) {
         return new ResponseEntity<>(ResponseMessage.builder().responseCode(HttpStatus.OK.value())

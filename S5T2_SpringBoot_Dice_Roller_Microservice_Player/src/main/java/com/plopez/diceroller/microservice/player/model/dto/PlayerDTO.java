@@ -1,5 +1,6 @@
 package com.plopez.diceroller.microservice.player.model.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -15,6 +16,8 @@ import java.time.LocalDateTime;
 @Builder
 public class PlayerDTO {
 
+    @NotNull(message = "Id must not be null.")
+    @JsonIgnore
     private int id;
     @NotNull(message = "Nickname must not be null.")
     private String nickname;

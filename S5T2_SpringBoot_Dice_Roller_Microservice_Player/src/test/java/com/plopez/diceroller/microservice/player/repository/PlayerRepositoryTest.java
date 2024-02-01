@@ -13,13 +13,11 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-
 @DataJpaTest
 public class PlayerRepositoryTest {
 
     @Autowired
     private PlayerRepository playerRepository;
-
     private Player newPlayer;
     private Player newPlayer2;
 

@@ -34,15 +34,31 @@ public class PlayerServiceTest {
     @Spy
     private ModelMapper modelMapper;
 
-    private List<Player> players;
     private Player player;
+    private PlayerDTO playerDTO;
+    private List<Player> players;
+
 
     @BeforeEach
     void testSetUp() {
         player = new Player(1, "player1", LocalDateTime.now(), 0.2F);
-        players = Arrays.asList(new Player(2, "player1", LocalDateTime.now(), 0.2F),
-                new Player(3, "player2", LocalDateTime.now(), 0.3F),
-                        new Player(4, "player3", LocalDateTime.now(), 0.4F));
+        playerDTO = new PlayerDTO();
+        players = Arrays.asList(new Player(2, "player2", LocalDateTime.now(), 0.2F),
+                new Player(3, "player3", LocalDateTime.now(), 0.3F),
+                        new Player(4, "player4", LocalDateTime.now(), 0.4F));
+    }
+
+    @DisplayName("Given a specific player, when the nickname is updated, then the specific player attribute is updated.")
+    @Test
+    void updatePlayerNickname() {
+        when(playerRepository.findById(1)).thenReturn(Optional.ofNullable(player));
+
+        String previousNickname = player.getNickname();
+        playerDTO.setNickname("newNickname");
+        PlayerDTO playerUpdated = playerServiceUnderTest.updatePlayerNickname(1, playerDTO);
+
+        assertThat(playerUpdated.getNickname()).isNotNull();
+        assertThat(playerUpdated.getGameSuccessRate()).isEqualTo(player.getGameSuccessRate());
     }
 
     @DisplayName("Given a specific player, when a success rate is updated, then player attribute is updated.")

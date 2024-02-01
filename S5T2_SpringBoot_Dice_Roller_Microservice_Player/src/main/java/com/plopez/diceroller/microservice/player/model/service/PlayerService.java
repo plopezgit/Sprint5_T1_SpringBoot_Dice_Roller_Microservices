@@ -55,7 +55,8 @@ public class PlayerService implements PlayerServiceInterface, GameClientServiceI
     public PlayerDTO updatePlayerNickname(int id, PlayerDTO playerDTO) {
         PlayerDTO player = getPlayerBy(id);
         player.setNickname(playerDTO.getNickname());
-        return getPlayerDTOFromEntity(playerRepository.save(getPlayerEntityFromDTO(player)));
+        playerRepository.save(getPlayerEntityFromDTO(player));
+        return player;
     }
 
     @Override
@@ -107,8 +108,8 @@ public class PlayerService implements PlayerServiceInterface, GameClientServiceI
         return playerModelMapper.map(player, PlayerDTO.class);
     }
 
-    private Player getPlayerEntityFromDTO(PlayerDTO flowerDTO) {
-        return playerModelMapper.map(flowerDTO, Player.class);
+    private Player getPlayerEntityFromDTO(PlayerDTO playerDTO) {
+        return playerModelMapper.map(playerDTO, Player.class);
     }
 
     private boolean isNicknameEmptyOf(PlayerDTO playerToCheck) {
@@ -128,5 +129,4 @@ public class PlayerService implements PlayerServiceInterface, GameClientServiceI
                 PlayerDTO.builder().nickname("Anonymous").build() :
                 PlayerDTO.builder().nickname(playerToSet.getNickname()).build();
     }
-
 }

@@ -7,7 +7,7 @@ import java.util.Optional;
 
 public interface PlayerRankingInformationServiceInterface extends PlayerServiceInterface {
 
-    void updatePlayerSuccessRate(int playerId, float rate) throws PlayerNotFoundException;
+    PlayerDTO updatePlayerSuccessRate(int playerId, float rate) throws PlayerNotFoundException;
     float getTotalPlayersWinningAverage();
     Optional<PlayerDTO> getPlayerMostLoser();
     Optional<PlayerDTO> getPlayerMostWinner();

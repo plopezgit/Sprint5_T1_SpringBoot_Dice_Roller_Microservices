@@ -35,12 +35,26 @@ public class PlayerServiceTest {
     private ModelMapper modelMapper;
 
     private List<Player> players;
+    private Player player;
 
     @BeforeEach
     void testSetUp() {
-        players = Arrays.asList(new Player(1, "player1", LocalDateTime.now(), 0.2F),
-                new Player(2, "player2", LocalDateTime.now(), 0.3F),
-                        new Player(3, "player3", LocalDateTime.now(), 0.4F));
+        player = new Player(1, "player1", LocalDateTime.now(), 0.2F);
+        players = Arrays.asList(new Player(2, "player1", LocalDateTime.now(), 0.2F),
+                new Player(3, "player2", LocalDateTime.now(), 0.3F),
+                        new Player(4, "player3", LocalDateTime.now(), 0.4F));
+    }
+
+    @DisplayName("Given a specific player, when a success rate is updated, then player attribute is updated.")
+    @Test
+    void updatePlayerSuccessRate() {
+        when(playerRepository.findById(1)).thenReturn(Optional.ofNullable(player));
+
+        float previousRate = player.getGameSuccessRate();
+        PlayerDTO playerUpdated = playerServiceUnderTest.updatePlayerSuccessRate(1, 0.6F);
+
+        assertThat(playerUpdated.getGameSuccessRate()).isNotNull();
+        assertThat(playerUpdated.getGameSuccessRate()).isNotEqualTo(previousRate);
     }
 
     @DisplayName("Given a player list, and players has gameSuccessRate data, when get its total average of success, the average is correct.")
@@ -79,6 +93,4 @@ public class PlayerServiceTest {
         assertThat(playerDTO.get().getGameSuccessRate()).isEqualTo(0.4F);
         assertThat(players.stream().max((Comparator.comparing(Player::getGameSuccessRate)))).hasSameHashCodeAs(playerDTO);
     }
-
-
 }

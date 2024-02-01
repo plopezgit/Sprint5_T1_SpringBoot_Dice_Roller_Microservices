@@ -74,10 +74,11 @@ public class PlayerService implements PlayerServiceInterface, GameClientServiceI
     }
 
     @Override
-    public void updatePlayerSuccessRate(int playerId, float rate) {
+    public PlayerDTO updatePlayerSuccessRate(int playerId, float rate) {
         PlayerDTO player = getPlayerBy(playerId);
         player.setGameSuccessRate(rate);
         playerRepository.save(getPlayerEntityFromDTO(player));
+        return player;
     }
 
     @Override

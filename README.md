@@ -2,6 +2,9 @@
 
 ### Current trace
 
+01/02/2024
+![current trace](dice-roller-microservices-use-trace4.gif)
+
 29/01/2024
 ![current trace](dice-roller-microservices-use-trace3.gif)
 

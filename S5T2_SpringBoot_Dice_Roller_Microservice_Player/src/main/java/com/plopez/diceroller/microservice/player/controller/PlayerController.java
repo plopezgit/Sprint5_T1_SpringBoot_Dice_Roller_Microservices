@@ -89,8 +89,7 @@ public class PlayerController {
     @CircuitBreaker(name="gamesCB", fallbackMethod ="fallbackGetGamesByPlayer")
     @GetMapping("/{playerId}/games")
     public ResponseEntity<List<GameDTO>> getGamesByPlayer(@PathVariable int playerId) {
-        List<GameDTO> games = playerService.getGamesBy(playerId);
-        return ResponseEntity.ok(games);
+        return ResponseEntity.ok(playerService.getGamesBy(playerId));
     }
 
     public ResponseEntity<ResponseMessage> fallbackCreateGameBy(@PathVariable("playerId") int playerId, RuntimeException e) {

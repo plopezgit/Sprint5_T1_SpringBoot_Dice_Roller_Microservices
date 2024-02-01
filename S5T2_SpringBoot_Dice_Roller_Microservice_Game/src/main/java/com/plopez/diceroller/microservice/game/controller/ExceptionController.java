@@ -13,6 +13,7 @@ import org.springframework.web.context.request.WebRequest;
 import java.rmi.ServerException;
 import java.util.Date;
 
+@SuppressWarnings("unused")
 @RestControllerAdvice
 public class ExceptionController {
 

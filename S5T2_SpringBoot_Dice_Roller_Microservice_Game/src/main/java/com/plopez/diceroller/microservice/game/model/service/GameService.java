@@ -60,14 +60,7 @@ public class GameService implements GameServiceInterface, PlayerClientServiceInt
 
     @Override
     public List<GameDTO> findGamesByPlayerId(int playerId) {
-        List<Game> games = gameRepository.findGamesByPlayerId(playerId);
-        if (games.isEmpty()) {
-            throw new EmptyGameListException("The player has not played yet.");
-        }
-        return games.stream()
-                .map(this::getGameDTOFromEntity)
-                .collect(Collectors.toList());
-        //return gameRepository.findGamesByPlayerId(playerId).stream().map(this::getGameDTOFromEntity).collect(Collectors.toList());
+        return gameRepository.findGamesByPlayerId(playerId).stream().map(this::getGameDTOFromEntity).collect(Collectors.toList());
     }
 
     private GameDTO getGameDTOFromEntity(Game game) {
@@ -92,6 +85,6 @@ public class GameService implements GameServiceInterface, PlayerClientServiceInt
         return new Random().nextInt(6)+1;
     }
 
-    private int setResult (int die1, int die2) { return (die1 + die2) != 7 ? 0 : 1; }
+    private int setResult(int die1, int die2) { return (die1 + die2) != 7 ? 0 : 1; }
 
 }

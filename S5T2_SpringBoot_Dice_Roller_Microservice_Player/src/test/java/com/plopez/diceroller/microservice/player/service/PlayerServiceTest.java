@@ -1,5 +1,6 @@
 package com.plopez.diceroller.microservice.player.service;
 
+import com.plopez.diceroller.microservice.player.model.dto.PlayerDTO;
 import com.plopez.diceroller.microservice.player.model.entity.Player;
 import com.plopez.diceroller.microservice.player.model.repository.PlayerRepository;
 import com.plopez.diceroller.microservice.player.model.service.PlayerService;
@@ -15,7 +16,9 @@ import org.modelmapper.ModelMapper;
 
 import java.time.LocalDateTime;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
@@ -36,7 +39,7 @@ public class PlayerServiceTest {
     @BeforeEach
     void testSetUp() {
         players = Arrays.asList(new Player(1, "player1", LocalDateTime.now(), 0.2F),
-                new Player(2, "player2", LocalDateTime.now(), 0.4F),
+                new Player(2, "player2", LocalDateTime.now(), 0.3F),
                         new Player(3, "player3", LocalDateTime.now(), 0.4F));
     }
 
@@ -51,6 +54,30 @@ public class PlayerServiceTest {
         assertThat(players.size()).isEqualTo(3);
         assertThat(players.stream().map(Player::getGameSuccessRate).reduce(0f, Float::sum) / players.size())
                 .isEqualTo(average);
+    }
+
+    @DisplayName("Given a player list, and player has gameSuccessRate data, when get the player most loser, then it is correct.")
+    @Test
+    void getPlayerMostLoser() {
+        when(playerRepository.findAll()).thenReturn(players);
+
+        Optional<PlayerDTO> playerDTO = playerServiceUnderTest.getPlayerMostLoser();
+
+        assertThat(playerDTO).isNotNull();
+        assertThat(playerDTO.get().getGameSuccessRate()).isEqualTo(0.2F);
+        assertThat(players.stream().min((Comparator.comparing(Player::getGameSuccessRate)))).hasSameHashCodeAs(playerDTO);
+    }
+
+    @DisplayName("Given a player list, and player has gameSuccessRate data, when get the player most winner, then it is correct.")
+    @Test
+    void getPlayerMostWinner() {
+        when(playerRepository.findAll()).thenReturn(players);
+
+        Optional<PlayerDTO> playerDTO = playerServiceUnderTest.getPlayerMostWinner();
+
+        assertThat(playerDTO).isNotNull();
+        assertThat(playerDTO.get().getGameSuccessRate()).isEqualTo(0.4F);
+        assertThat(players.stream().max((Comparator.comparing(Player::getGameSuccessRate)))).hasSameHashCodeAs(playerDTO);
     }
 
 

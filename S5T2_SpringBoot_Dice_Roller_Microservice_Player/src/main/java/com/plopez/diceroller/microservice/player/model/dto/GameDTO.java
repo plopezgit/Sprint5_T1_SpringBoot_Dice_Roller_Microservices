@@ -13,5 +13,4 @@ public class GameDTO {
     private int die2;
     private int result;
     private int playerId;
-
 }

@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import java.time.LocalDateTime;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
@@ -45,10 +46,12 @@ public class PlayerService implements PlayerServiceInterface, GameClientServiceI
 
     @Override
     public PlayerDTO createPlayer(PlayerDTO playerDTO) {
-        PlayerDTO newPlayer = setNicknameTo(playerDTO);
+        //Todo needs review
+        PlayerDTO newPlayer = PlayerDTO.builder().nickname(setNicknameTo(playerDTO).getNickname()).registrationTimeStamp(LocalDateTime.now()).build();
         if (existNickname(newPlayer) && !isAnonymous(newPlayer))
             throw new NickNameAlreadyExistException("The nickname already exist, please try another one.");
-        return getPlayerDTOFromEntity(playerRepository.save(getPlayerEntityFromDTO(newPlayer)));
+        playerRepository.save(getPlayerEntityFromDTO(newPlayer));
+        return newPlayer;
     }
 
     @Override

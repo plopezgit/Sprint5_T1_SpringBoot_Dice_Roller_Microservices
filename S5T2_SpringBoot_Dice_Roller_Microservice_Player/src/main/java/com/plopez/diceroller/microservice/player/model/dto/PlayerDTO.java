@@ -23,9 +23,4 @@ public class PlayerDTO {
     private String nickname;
     private LocalDateTime registrationTimeStamp;
     private float gameSuccessRate;
-
-    public PlayerDTO(String nickname) {
-        this.nickname = nickname;
-    }
-
 }

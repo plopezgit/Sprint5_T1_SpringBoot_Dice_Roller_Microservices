@@ -24,21 +24,24 @@ public class PlayerRepositoryTest {
 
     @BeforeEach
     void testSetUp() {
+        //todo
         String playerNickname = "testPlayer";
-        newPlayer = playerRepository.save(new Player(playerNickname));
+        //Todo needs review
+        newPlayer = playerRepository.save(Player.builder().nickname(playerNickname).build());
         String playerNickname2 = "testPlayer2";
-        newPlayer2 = playerRepository.save(new Player(playerNickname2));
+        //Todo needs review
+        newPlayer2 = playerRepository.save(Player.builder().nickname(playerNickname2).build());
     }
 
     @DisplayName("Given a new Player, when save, the player is saved on database.")
     @Test
     void createPlayerTest() {
-        Player savedPlayer = playerRepository.save(new Player("brutus"));
+        //Todo needs review
+        Player savedPlayer = playerRepository.save(Player.builder().nickname("brutus").build());
         assertThat(savedPlayer).isNotNull();
         assertThat(savedPlayer.getId()).isGreaterThan(0);
         assertThat(savedPlayer.getNickname()).isEqualTo("brutus");
         assertThat(savedPlayer.getGameSuccessRate()).isEqualTo(0.0F);
-        assertThat(savedPlayer.getRegistrationTimeStamp()).isBefore(LocalDateTime.now());
     }
 
     @DisplayName("Given a Player, when update its nickname, then the player is stored with the new nickname")

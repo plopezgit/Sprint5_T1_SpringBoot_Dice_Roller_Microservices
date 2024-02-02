@@ -24,7 +24,7 @@ public class PlayerRepositoryTest {
 
     @BeforeEach
     void testSetUp() {
-        //todo
+        //Todo needs review
         String playerNickname = "testPlayer";
         //Todo needs review
         newPlayer = playerRepository.save(Player.builder().nickname(playerNickname).build());

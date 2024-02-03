@@ -46,7 +46,6 @@ public class PlayerService implements PlayerServiceInterface, GameClientServiceI
 
     @Override
     public PlayerDTO createPlayer(PlayerDTO playerDTO) {
-        //Todo needs review
         PlayerDTO newPlayer = PlayerDTO.builder().nickname(setNicknameTo(playerDTO).getNickname()).registrationTimeStamp(LocalDateTime.now()).build();
         if (existNickname(newPlayer) && !isAnonymous(newPlayer))
             throw new NickNameAlreadyExistException("The nickname already exist, please try another one.");
@@ -57,7 +56,9 @@ public class PlayerService implements PlayerServiceInterface, GameClientServiceI
     @Override
     public PlayerDTO updatePlayerNickname(int id, PlayerDTO playerDTO) {
         PlayerDTO player = getPlayerBy(id);
-        player.setNickname(playerDTO.getNickname());
+        player.setNickname(setNicknameTo(playerDTO).getNickname());
+        if (existNickname(player) && !isAnonymous(player))
+            throw new NickNameAlreadyExistException("The nickname already exist, please try another one.");
         playerRepository.save(getPlayerEntityFromDTO(player));
         return player;
     }

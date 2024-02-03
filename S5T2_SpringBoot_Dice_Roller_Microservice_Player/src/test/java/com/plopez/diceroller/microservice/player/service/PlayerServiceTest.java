@@ -79,9 +79,7 @@ public class PlayerServiceTest {
     void createDuplicatedNicknamedPlayer_NickNameAlreadyExistExceptionTest() {
         when(playerRepository.existsByNickname(newNicknamedPlayerDTO.getNickname())).thenThrow(NickNameAlreadyExistException.class);
 
-        assertThrows(NickNameAlreadyExistException.class, () -> {
-            playerServiceUnderTest.createPlayer(newNicknamedPlayerDTO);
-        });
+        assertThrows(NickNameAlreadyExistException.class, () -> playerServiceUnderTest.createPlayer(newNicknamedPlayerDTO));
 
         Mockito.verify(playerRepository, never()).save(any());
     }
@@ -126,9 +124,7 @@ public class PlayerServiceTest {
         when(playerRepository.findById(anyInt()))
                 .thenReturn(Optional.empty());
 
-        assertThrows(PlayerNotFoundException.class, () -> {
-            playerServiceUnderTest.getPlayerBy(anyInt());
-        });
+        assertThrows(PlayerNotFoundException.class, () -> playerServiceUnderTest.getPlayerBy(anyInt()));
     }
 
     @DisplayName("Given a specific player, when a success rate is updated, then player attribute is updated.")

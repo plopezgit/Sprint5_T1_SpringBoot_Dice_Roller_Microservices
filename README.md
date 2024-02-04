@@ -2,6 +2,9 @@
 
 ### Current trace
 
+04/02/2024
+![current trace](dice-roller-microservices-use-trace5.gif)
+
 01/02/2024
 ![current trace](dice-roller-microservices-use-trace4.gif)
 
@@ -51,8 +54,9 @@
 
 ##### Level 2
 
-- [ ] Add unit, component and integration tests to the project with jUnit, AssertJ or Hamcrest libraries.
-- [ ] Add Mocks to project testing (Mockito) and Contract Tests (https://docs.pact.io/)
+- [x] Add unit, component and integration tests to the project with jUnit, AssertJ or Hamcrest libraries.
+- [x] Add Mocks to project testing (Mockito) 
+- [ ] and Contract Tests (https://docs.pact.io/)
 
 ##### Level 3
 

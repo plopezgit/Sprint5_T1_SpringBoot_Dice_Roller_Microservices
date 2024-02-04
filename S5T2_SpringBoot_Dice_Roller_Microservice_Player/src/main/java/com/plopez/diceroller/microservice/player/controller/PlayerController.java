@@ -74,9 +74,10 @@ public class PlayerController {
         return ResponseEntity.ok(playerService.createGameBy(playerId));
     }
 
+    //Todo review return
     @CircuitBreaker(name="gamesCB", fallbackMethod ="fallbackDeleteGamesBy")
     @DeleteMapping("/{playerId}/games")
-    public ResponseEntity<?> deleteGamesBy(@PathVariable int playerId, WebRequest request) {
+    public ResponseEntity<ResponseMessage> deleteGamesBy(@PathVariable int playerId, WebRequest request) {
         playerService.deleteGamesBy(playerId);
         return new ResponseEntity<>(ResponseMessage.builder()
                 .responseCode(HttpStatus.ACCEPTED.value())

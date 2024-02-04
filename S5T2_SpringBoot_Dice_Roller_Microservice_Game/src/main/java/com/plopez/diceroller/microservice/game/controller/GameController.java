@@ -39,6 +39,7 @@ public class GameController {
         }*/
     }
 
+    //Todo review return
     @DeleteMapping("{playerId}/delete")
     public ResponseEntity<ResponseMessage> deleteGamesBy(@PathVariable int playerId) {
         gameService.deleteGamesBy(playerId);

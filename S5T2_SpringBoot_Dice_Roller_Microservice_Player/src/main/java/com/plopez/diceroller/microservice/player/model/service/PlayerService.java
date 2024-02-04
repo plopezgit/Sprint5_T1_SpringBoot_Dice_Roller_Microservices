@@ -11,6 +11,8 @@ import com.plopez.diceroller.microservice.player.model.service.interfaces.Player
 import com.plopez.diceroller.microservice.player.model.service.interfaces.PlayerServiceInterface;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -87,8 +89,8 @@ public class PlayerService implements PlayerServiceInterface, GameClientServiceI
     }
 
     @Override
-    public void deleteGamesBy(int playerId) {
-        restTemplate.delete("http://game-service/games/"+ playerId +"/delete");
+    public ResponseEntity<Void> deleteGamesBy(int playerId) {
+        return restTemplate.exchange("http://game-service/games/"+ playerId +"/delete", HttpMethod.DELETE, null, Void.class);
     }
 
     @Override

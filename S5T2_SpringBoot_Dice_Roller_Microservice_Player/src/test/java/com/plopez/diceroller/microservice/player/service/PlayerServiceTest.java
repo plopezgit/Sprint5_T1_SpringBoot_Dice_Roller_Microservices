@@ -1,5 +1,6 @@
 package com.plopez.diceroller.microservice.player.service;
 
+import com.plopez.diceroller.microservice.player.model.dto.GameDTO;
 import com.plopez.diceroller.microservice.player.model.dto.PlayerDTO;
 import com.plopez.diceroller.microservice.player.model.entity.Player;
 import com.plopez.diceroller.microservice.player.model.exception.NickNameAlreadyExistException;
@@ -16,6 +17,8 @@ import org.mockito.Mockito;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.web.client.TestRestTemplate;
 
 import java.time.LocalDateTime;
 import java.util.Arrays;

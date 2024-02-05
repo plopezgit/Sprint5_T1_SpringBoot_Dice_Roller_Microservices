@@ -10,7 +10,7 @@ import org.springframework.context.annotation.Bean;
 
 @SpringBootApplication
 @EnableDiscoveryClient
-@OpenAPIDefinition(info = @Info(title = "Game microservice", description = "Process information related to " +
+@OpenAPIDefinition(info = @Info(title = "Game microservice", description = "Process the information related to " +
 		"the Dice roller Game; It is able to connect to Player microservice player to link games with a specific player, " +
 		"keep updated player success rate information, and delete all the games of a specific player.", version = "1.0.0"))
 public class S5T2SpringBootDiceRollerMicroserviceGameApplication {

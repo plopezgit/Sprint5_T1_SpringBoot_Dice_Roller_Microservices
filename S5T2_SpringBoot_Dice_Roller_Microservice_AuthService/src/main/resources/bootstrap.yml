@@ -8,3 +8,7 @@ spring:
 
 jwt:
   secret: secret
+
+springdoc:
+  swagger-ui:
+    path: /auth-service-documentation

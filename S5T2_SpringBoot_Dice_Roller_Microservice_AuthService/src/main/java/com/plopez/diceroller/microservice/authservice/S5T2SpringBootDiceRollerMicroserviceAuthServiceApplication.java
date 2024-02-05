@@ -8,7 +8,9 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 
 @SpringBootApplication
 @EnableDiscoveryClient
-@OpenAPIDefinition(info = @Info(title = "Auth-Service", version = "1.0.0"))
+@OpenAPIDefinition(info = @Info(title = "Auth microservice", description = "Process the information related to " +
+		"authenticated and secure access for teh Dice Roller Player/Game microservices; It is able to register user for access microservices, " +
+		"generate and validate user microservices access tokens.", version = "1.0.0"))
 public class S5T2SpringBootDiceRollerMicroserviceAuthServiceApplication {
 
 	public static void main(String[] args) {

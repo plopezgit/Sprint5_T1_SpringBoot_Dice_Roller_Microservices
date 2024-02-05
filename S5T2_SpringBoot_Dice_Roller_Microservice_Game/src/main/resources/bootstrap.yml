@@ -5,3 +5,7 @@ spring:
     config:
       enabled: true
       uri: http://localhost:8081
+
+springdoc:
+  swagger-ui:
+    path: /game-service-documentation

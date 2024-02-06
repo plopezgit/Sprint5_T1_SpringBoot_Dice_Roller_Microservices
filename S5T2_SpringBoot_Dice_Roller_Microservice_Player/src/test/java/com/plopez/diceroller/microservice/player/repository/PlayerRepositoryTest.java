@@ -8,7 +8,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -21,22 +20,17 @@ public class PlayerRepositoryTest {
     private Player newPlayer;
     private Player newPlayer2;
 
-
     @BeforeEach
     void testSetUp() {
-        //Todo needs review
         String playerNickname = "testPlayer";
-        //Todo needs review
         newPlayer = playerRepository.save(Player.builder().nickname(playerNickname).build());
         String playerNickname2 = "testPlayer2";
-        //Todo needs review
         newPlayer2 = playerRepository.save(Player.builder().nickname(playerNickname2).build());
     }
 
     @DisplayName("Given a new Player, when save, the player is saved on database.")
     @Test
     void createPlayerTest() {
-        //Todo needs review
         Player savedPlayer = playerRepository.save(Player.builder().nickname("brutus").build());
         assertThat(savedPlayer).isNotNull();
         assertThat(savedPlayer.getId()).isGreaterThan(0);

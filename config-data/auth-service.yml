@@ -22,18 +22,6 @@ eureka:
         method: "POST"
       - uri: "/players/{1}[1-9]+[0-9]*/games"
         method: "DELETE"
-      - uri: "/players"
-        method: "GET"
-      - uri: "/games"
-        method: "GET"
-      - uri: "/games/{1}[1-9]+[0-9]*"
-        method: "GET"
-      - uri: "/players/ranking"
-        method: "GET"
-      - uri: "/players/ranking/loser"
-        method: "GET"
-      - uri: "/players/{1}[1-9]+[0-9]*/games"
-        method: "GET"
 
 spring:
   data:

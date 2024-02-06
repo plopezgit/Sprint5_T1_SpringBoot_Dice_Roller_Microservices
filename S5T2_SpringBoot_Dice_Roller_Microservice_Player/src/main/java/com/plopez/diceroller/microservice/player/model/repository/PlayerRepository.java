@@ -9,6 +9,7 @@ import java.util.Optional;
 @SuppressWarnings("unused")
 @Repository
 public interface PlayerRepository extends JpaRepository<Player, Integer> {
+    // Todo delete unused and regression test
     Optional<Player> findByNickname(String nickname);
     boolean existsByNickname(String nickname);
     boolean existsById(int playerId);

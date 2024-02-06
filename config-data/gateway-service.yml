@@ -25,6 +25,7 @@ spring:
           uri: lb://game-service
           predicates:
             - Path=/games/**
+          filters: AuthFilter
         - id: auth-service
           uri: lb://auth-service
           predicates:

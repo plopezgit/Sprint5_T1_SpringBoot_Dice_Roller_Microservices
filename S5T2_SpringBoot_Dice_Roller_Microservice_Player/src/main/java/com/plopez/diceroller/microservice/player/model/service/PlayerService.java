@@ -27,10 +27,8 @@ public class PlayerService implements PlayerServiceInterface, GameClientServiceI
 
     @Autowired
     private PlayerRepository playerRepository;
-
     @Autowired
     private ModelMapper playerModelMapper;
-
     @Autowired
     private RestTemplate restTemplate;
 

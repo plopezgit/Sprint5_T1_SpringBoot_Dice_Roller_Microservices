@@ -48,7 +48,6 @@ public class GameService implements GameServiceInterface, PlayerClientServiceInt
         return getGameDTOFromEntity(gameRepository.save(getGameEntityFromDTO(newGame)));
     }
 
-    //Todo review return
     @Override
     public void deleteGamesBy(int playerId) {
         gameRepository.deleteGamesByPlayerId(playerId);

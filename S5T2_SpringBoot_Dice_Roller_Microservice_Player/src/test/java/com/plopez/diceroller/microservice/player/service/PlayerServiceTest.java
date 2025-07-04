@@ -1,6 +1,5 @@
 package com.plopez.diceroller.microservice.player.service;
 
-import com.plopez.diceroller.microservice.player.model.dto.GameDTO;
 import com.plopez.diceroller.microservice.player.model.dto.PlayerDTO;
 import com.plopez.diceroller.microservice.player.model.entity.Player;
 import com.plopez.diceroller.microservice.player.model.exception.NickNameAlreadyExistException;
@@ -17,8 +16,6 @@ import org.mockito.Mockito;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.web.client.TestRestTemplate;
 
 import java.time.LocalDateTime;
 import java.util.Arrays;
@@ -57,7 +54,6 @@ public class PlayerServiceTest {
     void testSetUp() {
         player = new Player(1, "player1", LocalDateTime.now(), 0.2F);
         playerDTO = new PlayerDTO();
-        //Todo needs review
         newAnonymousPlayerDTO = PlayerDTO.builder().nickname("").build();
         newNicknamedPlayerDTO = PlayerDTO.builder().nickname(NEW_PLAYER_NICKNAME_EXPECTED_VALUE).build();
         players = Arrays.asList(new Player(2, "player2", LocalDateTime.now(), 0.2F),

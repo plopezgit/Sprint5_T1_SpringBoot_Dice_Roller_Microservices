@@ -31,7 +31,7 @@ public class ExceptionController {
     }
 
     @ExceptionHandler(AuthUserInvalidException.class)
-    @ResponseStatus(value = HttpStatus.NOT_FOUND)
+    @ResponseStatus(value = HttpStatus.NON_AUTHORITATIVE_INFORMATION)
     public ResponseEntity<ResponseMessage> authUserInvalidExceptionHandler(AuthUserInvalidException exception, WebRequest request) {
         return new ResponseEntity<>(ResponseMessage.builder()
                 .responseCode(HttpStatus.NON_AUTHORITATIVE_INFORMATION.value())
@@ -42,7 +42,7 @@ public class ExceptionController {
     }
 
     @ExceptionHandler(TokenInvalidException.class)
-    @ResponseStatus(value = HttpStatus.NOT_FOUND)
+    @ResponseStatus(value = HttpStatus.NON_AUTHORITATIVE_INFORMATION)
     public ResponseEntity<ResponseMessage> tokenInvalidExceptionHandler(TokenInvalidException exception, WebRequest request) {
         return new ResponseEntity<>(ResponseMessage.builder()
                 .responseCode(HttpStatus.NON_AUTHORITATIVE_INFORMATION.value())
@@ -53,7 +53,7 @@ public class ExceptionController {
     }
 
     @ExceptionHandler(AuthUserAlreadyExistException.class)
-    @ResponseStatus(value = HttpStatus.NOT_FOUND)
+    @ResponseStatus(value = HttpStatus.ALREADY_REPORTED)
     public ResponseEntity<ResponseMessage> authUserAlreadyExistExceptionHandler(AuthUserAlreadyExistException exception, WebRequest request) {
         return new ResponseEntity<>(ResponseMessage.builder()
                 .responseCode(HttpStatus.ALREADY_REPORTED.value())
